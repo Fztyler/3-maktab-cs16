@@ -1,0 +1,12 @@
+3_maktab.wad
+models/maktab/ballrack.mdl
+models/maktab/bench.mdl
+models/maktab/bin.mdl
+models/maktab/books.mdl
+models/maktab/clock.mdl
+models/maktab/computer.mdl
+models/maktab/hall_chair.mdl
+models/maktab/kitchenware.mdl
+models/maktab/planter.mdl
+models/maktab/radio.mdl
+sound/maktab/courtyard_radio.wav
