@@ -19,7 +19,7 @@ ents=re.findall(r'\{[^{}]*\}',lumps[0].decode('latin1'));index=0
 for i,e in enumerate(ents):
  kv=v.props(e)
  if kv.get('classname')=='worldspawn':
-  e=e.replace('"message" "3-MAKTAB | School, Uzbekistan"','"message" "Day3 Map Mini"');e=e[:-1]+'"maxrange" "8192"\n}'
+  e=e.replace('"message" "3-MAKTAB | School, Uzbekistan"','"message" "Day3 Map Mini"');e=e[:-1]+'"MaxRange" "8192"\n}'
  if kv.get('classname')=='info_player_deathmatch':
   e=re.sub(r'"origin" "[^"]+"','"origin" "'+' '.join(map(str,spots[index]))+'"',e);index+=1
  if kv.get('classname')=='func_buyzone' and kv.get('team')=='1':
