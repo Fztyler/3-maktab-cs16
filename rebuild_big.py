@@ -5,9 +5,11 @@ import json
 from collections import defaultdict
 
 PLAN_SCALE=.28
-def PX(x): return round(-17.62+(x+12.784)*PLAN_SCALE,4)
-def PY(y): return round(-10+(y+63.737)*PLAN_SCALE,4)
-H=168
+PLAN_X=.336
+PLAN_Y=.42
+def PX(x): return round(-17.62+(x+12.784)*PLAN_X,4)
+def PY(y): return round(-10+(y+63.737)*PLAN_Y,4)
+H=184
 UP=8+H
 ROOF=UP+H
 source=json.loads((ROOT/'new_floor_meshes.json').read_text(encoding='utf8'))
@@ -26,7 +28,7 @@ for obj in source:
         rooms.append(dict(name=name,polys=polys,box=(min(p[0] for p in pts),max(p[0] for p in pts),min(p[1] for p in pts),max(p[1] for p in pts))))
 
 stairs=[(17.24,30.0,-5.97,9.21),(124.90,137.70,-25.05,-8.0)]
-stair_landings=[(a,b,c-4.0,c) for a,b,c,d in stairs]
+stair_landings=[(8.5,stairs[0][1],stairs[0][2]-6.0,stairs[0][2]), (112.0,stairs[1][1],stairs[1][2]-6.0,stairs[1][2])]
 rectpoly=lambda b:[(b[0],b[2]),(b[1],b[2]),(b[1],b[3]),(b[0],b[3])]
 floor_polys.extend(map(rectpoly,stairs))
 floor_polys.extend(map(rectpoly,stair_landings))
@@ -122,10 +124,13 @@ for idx,(axis,fixed,a,b,label,other) in enumerate(segments):
         # Fewer, larger windows keep model precaching below GoldSrc's limit.
         panes=False
         if hi-lo>2.8 and opening is None:
-            mid=(lo+hi)/2; width=min(2.1,(hi-lo)*.5)
+            mid=(lo+hi)/2; width=min(3.0,(hi-lo)*.66)
             panes=([(mid-width/2,mid+width/2,ROOF-100,ROOF-45)] if label==gym_label else
-                   [(mid-width/2,mid+width/2,50,105),(mid-width/2,mid+width/2,UP+42,UP+97)])
-            # wall_y uses its own regular window placement.
+                   [(mid-width/2,mid+width/2,48,120),(mid-width/2,mid+width/2,UP+40,UP+112)])
+            # Windows above the entrance remain aligned with the upper-floor row.
+        if opening and axis=='x' and abs(fixed+12.78)<.05:
+            mid=(opening[0]+opening[1])/2
+            panes=[(mid-1.45,mid+1.45,UP+40,UP+112)]
         if axis=='x': new_wall(axis,fixed,a,b,8,ROOF,door=opening,window=panes)
         else: new_wall(axis,fixed,a,b,8,ROOF,door=opening,window=panes)
     else:
@@ -133,6 +138,34 @@ for idx,(axis,fixed,a,b,label,other) in enumerate(segments):
             floor_opening=None if z==UP and gym_label in (label,other) else opening
             new_wall(axis,fixed,a,b,z,z+H,door=floor_opening)
             if floor_opening: new_door(axis,fixed,floor_opening,z)
+
+# Western entrance: white glazed vestibule, blue lower panels, blank fascia.
+wx=PX(-12.784); ey=(PY(-22)+PY(-13))/2
+for yy in (ey-2.1,ey+2.1):
+    wall_y(yy,wx-1.8,wx,8,136,'SCHOOL_WHITE',window=[(wx-1.65,wx-.15,28,116)])
+wall_x(wx-1.8,ey-2.1,ey+2.1,8,136,'SCHOOL_WHITE',door=(ey-1,ey+1),window=[(ey-2,ey-1.1,30,116),(ey+1.1,ey+2,30,116)])
+hinged_door('x',wx-1.8,ey-1,ey+1,8,texture='ENTRY_DOOR')
+add(wx-2.05,ey-2.35,136,wx+.15,ey+2.35,178,'SCHOOL_WHITE')
+# The only remaining plaque sits on the solid canopy fascia, below all windows.
+static_details.append(brush(wx-2.09,ey-1.6,141,wx-2.06,ey+1.6,173,'MAKTAB_SIGN',shift_u=-Y(ey-1.6)/.5,shift_v=173/.5,scale_u=.5,scale_v=.5))
+add(wx-1.85,ey-2.1,8,wx-1.7,ey-1.1,28,'CAR_BLUE')
+add(wx-1.85,ey+1.1,8,wx-1.7,ey+2.1,28,'CAR_BLUE')
+add(wx-1.8,ey-2.1,0,wx,ey+2.1,8,'STAIR_STONE')
+for i in range(4):
+    add(wx-2.8+i*.25,ey-2.2,0,wx-1.8,ey+2.2,2+i*2,'STAIR_STONE')
+add(wx-.12,PY(-63.737),8,wx-.02,PY(33.053),25,'SCHOOL_RED')
+add(wx-.15,PY(-63.737),ROOF+8,wx+.18,PY(33.053),ROOF+18,'SCHOOL_RED')
+
+# Shallow burgundy standing-seam roof and white cornice on the west wing.
+roof_east=PX(8.5); ridge=(wx+roof_east)/2
+prism_xz([(wx-.32,ROOF+12),(roof_east+.32,ROOF+12),(ridge,ROOF+52)],PY(-63.737)-.25,PY(33.053)+.25,'ROOF_BURGUNDY')
+add(wx-.24,PY(-63.737)-.15,ROOF-2,wx+.08,PY(33.053)+.15,ROOF+9,'SCHOOL_WHITE')
+# A shallow sill projects below every western window.
+for axis,fixed,a,b,label,other in segments:
+    if axis=='x' and other==-1 and abs(fixed+12.78)<.05 and PY(b)-PY(a)>2.8 and not a<-16<b:
+        center=(PY(a)+PY(b))/2; width=min(3.0,(PY(b)-PY(a))*.66)
+        for height in (48,UP+40):
+            static_details.append(brush(wx-.2,center-width/2-.08,height-3,wx+.07,center+width/2+.08,height,'SCHOOL_WHITE'))
 
 # Comfortable switchback stairs at both markers, with continuous solid parapets.
 for x0,x1,y0,y1 in stairs:
@@ -152,7 +185,7 @@ for x0,x1,y0,y1 in stairs:
 room_report=[]
 for k,r in enumerate(rooms,1):
     a,b,c,d=r['box']; x0,x1,y0,y1=PX(a),PX(b),PY(c),PY(d); mx,my=(x0+x1)/2,(y0+y1)/2
-    room_report.append({'name':r['name'],'bounds':[x0,x1,y0,y1],'door':doors.get(k)})
+    room_report.append({'name':r['name'],'bounds':[x0,x1,y0,y1],'door':doors.get(k),'seats':r.setdefault('seats',{})})
     for floor,z in enumerate((8,UP)):
         if k==gym_label:
             if floor: continue
@@ -160,7 +193,6 @@ for k,r in enumerate(rooms,1):
             prop('ballrack',x1-1,y0+1,8,solid=(50,18,35))
             for yy in (y0+1.2,y1-1.2):
                 prop('bench',x0+2,yy,8,solid=(80,22,22))
-            deco(x1-.2,my-1.5,105,x1-.12,my+1.5,140,'SCOREBOARD')
             continue
         if min(x1-x0,y1-y0)<1.8:
             continue # Narrow vestibules remain clear, as in the source sketch.
@@ -198,13 +230,19 @@ for k,r in enumerate(rooms,1):
         prop('books',mx,y1-.8,z+34)
         prop('clock',mx,y1-.2,z+H-35)
         if not office:
-            for yy in (y0+1.2,y0+2.6):
-                if yy>y1-1.7: continue
-                for xx in ([mx] if x1-x0<4.5 else [mx-1.5,mx+1.5]):
-                    add(xx-.55,yy-.3,z+27,xx+.55,yy+.3,z+31,'DESK_WOOD')
-                    prop('hall_chair',xx,yy-.65,z)
-                    if computer: prop('computer',xx,yy,z+31)
-        deco(x0+.25,y1-.18,z+53,x1-.25,y1-.1,z+92,'POSTER_GEO' if r['name']=='ENGLISH' else 'BLACKBOARD')
+            # Paired desks: three banks, five rows, two seats per desk.
+            banks=3 if x1-x0>=6.4 else 2 if x1-x0>=4.5 else 1
+            rows=min(5,max(1,int((y1-y0-1.5)/.91)))
+            usable=x1-x0-1.3
+            for row in range(rows):
+                yy=y0+.9+row*.91
+                for col in range(banks):
+                    xx=mx+(col-(banks-1)/2)*(usable/banks)
+                    static_details.append(brush(xx-.65,yy-.24,z+28,xx+.65,yy+.24,z+32,'DESK_WOOD'))
+                    for seat in (-.34,.34):
+                        prop('hall_chair',xx+seat,yy-.48,z)
+                    if computer: prop('computer',xx,yy,z+32)
+            r.setdefault('seats',{})[str(floor)]=banks*rows*2
 
 # Corridor lights follow its actual floor runs, rather than a full bounding box.
 for a,b,c,d,label in merged_rectangles(lambda i,j:0 if cells.get((i,j))==0 else None):
@@ -219,6 +257,6 @@ site_a=((gx0+gx1)/2,(gy0+gy1)/2)
 ct_room=kitch
 big=(PX(-12.784),PX(209.46),PY(-63.737),PY(33.053))
 def inside_big_scene(x,y,polys=tuple(floor_polys)):
-    p=((x+17.62)/PLAN_SCALE-12.784,(y+10)/PLAN_SCALE-63.737)
+    p=((x+17.62)/PLAN_X-12.784,(y+10)/PLAN_Y-63.737)
     return any(inside(p,poly) for poly in polys)
-(ROOT/'new_big_layout.json').write_text(json.dumps({'rooms':room_report,'stairs':[[PX(a),PX(b),PY(c),PY(d)] for a,b,c,d in stairs],'site_a':site_a,'ct_room':ct_room,'upper_floor_z':UP},ensure_ascii=False,indent=2),encoding='utf8')
+(ROOT/'new_big_layout.json').write_text(json.dumps({'rooms':room_report,'stairs':[[PX(a),PX(b),PY(c),PY(d)] for a,b,c,d in stairs],'stair_landings':[[PX(a),PX(b),PY(c),PY(d)] for a,b,c,d in stair_landings],'site_a':site_a,'ct_room':ct_room,'upper_floor_z':UP,'floor_height':H,'roof_z':ROOF},ensure_ascii=False,indent=2),encoding='utf8')

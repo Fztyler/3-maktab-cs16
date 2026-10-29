@@ -1,0 +1,1850 @@
+[
+  {
+    "glass": "maktab_glass_000",
+    "frame": "maktab_frame_000",
+    "building": "big_corpus",
+    "bounds": [
+      -17.6587,
+      -8.2866,
+      49,
+      -17.5787,
+      -5.3866000000000005,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_001",
+    "frame": "maktab_frame_001",
+    "building": "big_corpus",
+    "bounds": [
+      -17.6587,
+      -8.2866,
+      233,
+      -17.5787,
+      -5.3866000000000005,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_002",
+    "frame": "maktab_frame_002",
+    "building": "big_corpus",
+    "bounds": [
+      -16.906669,
+      -10.0413,
+      49,
+      -14.436431,
+      -9.961300000000001,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_003",
+    "frame": "maktab_frame_003",
+    "building": "big_corpus",
+    "bounds": [
+      -16.906669,
+      -10.0413,
+      233,
+      -14.436431,
+      -9.961300000000001,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_004",
+    "frame": "maktab_frame_004",
+    "building": "big_corpus",
+    "bounds": [
+      -17.6587,
+      0.19949999999999973,
+      49,
+      -17.5787,
+      3.0995,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_005",
+    "frame": "maktab_frame_005",
+    "building": "big_corpus",
+    "bounds": [
+      -17.6587,
+      0.19949999999999973,
+      233,
+      -17.5787,
+      3.0995,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_006",
+    "frame": "maktab_frame_006",
+    "building": "big_corpus",
+    "bounds": [
+      -17.6587,
+      8.019499999999999,
+      233,
+      -17.5787,
+      10.819499999999998,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_007",
+    "frame": "maktab_frame_007",
+    "building": "big_corpus",
+    "bounds": [
+      -16.906669,
+      11.051100000000002,
+      49,
+      -14.436431,
+      11.1311,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_008",
+    "frame": "maktab_frame_008",
+    "building": "big_corpus",
+    "bounds": [
+      -16.906669,
+      11.051100000000002,
+      233,
+      -14.436431,
+      11.1311,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_009",
+    "frame": "maktab_frame_009",
+    "building": "big_corpus",
+    "bounds": [
+      -6.753059,
+      11.702100000000002,
+      49,
+      -4.023441,
+      11.7821,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_010",
+    "frame": "maktab_frame_010",
+    "building": "big_corpus",
+    "bounds": [
+      -6.753059,
+      11.702100000000002,
+      233,
+      -4.023441,
+      11.7821,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_011",
+    "frame": "maktab_frame_011",
+    "building": "big_corpus",
+    "bounds": [
+      -17.6587,
+      15.9999,
+      49,
+      -17.5787,
+      18.8999,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_012",
+    "frame": "maktab_frame_012",
+    "building": "big_corpus",
+    "bounds": [
+      -17.6587,
+      15.9999,
+      233,
+      -17.5787,
+      18.8999,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_013",
+    "frame": "maktab_frame_013",
+    "building": "big_corpus",
+    "bounds": [
+      -16.906669,
+      14.222100000000001,
+      49,
+      -14.436431,
+      14.3021,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_014",
+    "frame": "maktab_frame_014",
+    "building": "big_corpus",
+    "bounds": [
+      -16.906669,
+      14.222100000000001,
+      233,
+      -14.436431,
+      14.3021,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_015",
+    "frame": "maktab_frame_015",
+    "building": "big_corpus",
+    "bounds": [
+      -17.6587,
+      21.393131999999998,
+      49,
+      -17.5787,
+      24.031868,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_016",
+    "frame": "maktab_frame_016",
+    "building": "big_corpus",
+    "bounds": [
+      -17.6587,
+      21.393131999999998,
+      233,
+      -17.5787,
+      24.031868,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_017",
+    "frame": "maktab_frame_017",
+    "building": "big_corpus",
+    "bounds": [
+      -17.6587,
+      26.2689,
+      49,
+      -17.5787,
+      29.168899999999997,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_018",
+    "frame": "maktab_frame_018",
+    "building": "big_corpus",
+    "bounds": [
+      -17.6587,
+      26.2689,
+      233,
+      -17.5787,
+      29.168899999999997,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_019",
+    "frame": "maktab_frame_019",
+    "building": "big_corpus",
+    "bounds": [
+      -15.1963,
+      30.610500000000002,
+      49,
+      -12.296300000000002,
+      30.6905,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_020",
+    "frame": "maktab_frame_020",
+    "building": "big_corpus",
+    "bounds": [
+      -15.1963,
+      30.610500000000002,
+      233,
+      -12.296300000000002,
+      30.6905,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_021",
+    "frame": "maktab_frame_021",
+    "building": "big_corpus",
+    "bounds": [
+      9.20575,
+      -10.0413,
+      49,
+      12.105749999999999,
+      -9.961300000000001,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_022",
+    "frame": "maktab_frame_022",
+    "building": "big_corpus",
+    "bounds": [
+      9.20575,
+      -10.0413,
+      233,
+      12.105749999999999,
+      -9.961300000000001,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_023",
+    "frame": "maktab_frame_023",
+    "building": "big_corpus",
+    "bounds": [
+      -13.764399999999998,
+      11.680170000000002,
+      49,
+      -13.6844,
+      13.673029999999999,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_024",
+    "frame": "maktab_frame_024",
+    "building": "big_corpus",
+    "bounds": [
+      -13.764399999999998,
+      11.680170000000002,
+      233,
+      -13.6844,
+      13.673029999999999,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_025",
+    "frame": "maktab_frame_025",
+    "building": "big_corpus",
+    "bounds": [
+      -9.9139,
+      5.3529,
+      49,
+      -9.833900000000002,
+      8.2529,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_026",
+    "frame": "maktab_frame_026",
+    "building": "big_corpus",
+    "bounds": [
+      -9.9139,
+      5.3529,
+      233,
+      -9.833900000000002,
+      8.2529,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_027",
+    "frame": "maktab_frame_027",
+    "building": "big_corpus",
+    "bounds": [
+      -9.9139,
+      15.9999,
+      49,
+      -9.833900000000002,
+      18.8999,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_028",
+    "frame": "maktab_frame_028",
+    "building": "big_corpus",
+    "bounds": [
+      -9.9139,
+      15.9999,
+      233,
+      -9.833900000000002,
+      18.8999,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_029",
+    "frame": "maktab_frame_029",
+    "building": "big_corpus",
+    "bounds": [
+      -6.78955,
+      2.4747,
+      49,
+      -3.88955,
+      2.5547,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_030",
+    "frame": "maktab_frame_030",
+    "building": "big_corpus",
+    "bounds": [
+      -6.78955,
+      2.4747,
+      233,
+      -3.88955,
+      2.5547,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_031",
+    "frame": "maktab_frame_031",
+    "building": "big_corpus",
+    "bounds": [
+      7.661799999999999,
+      20.5977,
+      49,
+      10.561799999999998,
+      20.677699999999998,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_032",
+    "frame": "maktab_frame_032",
+    "building": "big_corpus",
+    "bounds": [
+      7.661799999999999,
+      20.5977,
+      233,
+      10.561799999999998,
+      20.677699999999998,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_033",
+    "frame": "maktab_frame_033",
+    "building": "big_corpus",
+    "bounds": [
+      31.83705,
+      20.5977,
+      49,
+      34.73705,
+      20.677699999999998,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_034",
+    "frame": "maktab_frame_034",
+    "building": "big_corpus",
+    "bounds": [
+      31.83705,
+      20.5977,
+      233,
+      34.73705,
+      20.677699999999998,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_035",
+    "frame": "maktab_frame_035",
+    "building": "big_corpus",
+    "bounds": [
+      -8.514899999999999,
+      30.610500000000002,
+      49,
+      -5.6149,
+      30.6905,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_036",
+    "frame": "maktab_frame_036",
+    "building": "big_corpus",
+    "bounds": [
+      -8.514899999999999,
+      30.610500000000002,
+      233,
+      -5.6149,
+      30.6905,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_037",
+    "frame": "maktab_frame_037",
+    "building": "big_corpus",
+    "bounds": [
+      -9.5644,
+      7.979298,
+      49,
+      -9.4844,
+      10.393502,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_038",
+    "frame": "maktab_frame_038",
+    "building": "big_corpus",
+    "bounds": [
+      -9.5644,
+      7.979298,
+      233,
+      -9.4844,
+      10.393502,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_039",
+    "frame": "maktab_frame_039",
+    "building": "big_corpus",
+    "bounds": [
+      -9.5644,
+      15.9999,
+      49,
+      -9.4844,
+      18.8999,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_040",
+    "frame": "maktab_frame_040",
+    "building": "big_corpus",
+    "bounds": [
+      -9.5644,
+      15.9999,
+      233,
+      -9.4844,
+      18.8999,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_041",
+    "frame": "maktab_frame_041",
+    "building": "big_corpus",
+    "bounds": [
+      -7.5719,
+      8.089968,
+      49,
+      -7.4919,
+      10.933832,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_042",
+    "frame": "maktab_frame_042",
+    "building": "big_corpus",
+    "bounds": [
+      -7.5719,
+      8.089968,
+      233,
+      -7.4919,
+      10.933832,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_043",
+    "frame": "maktab_frame_043",
+    "building": "big_corpus",
+    "bounds": [
+      -3.2846,
+      14.739900000000002,
+      49,
+      -3.2046,
+      17.6399,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_044",
+    "frame": "maktab_frame_044",
+    "building": "big_corpus",
+    "bounds": [
+      -3.2846,
+      14.739900000000002,
+      233,
+      -3.2046,
+      17.6399,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_045",
+    "frame": "maktab_frame_045",
+    "building": "big_corpus",
+    "bounds": [
+      -1.3597499999999998,
+      30.610500000000002,
+      49,
+      1.5402500000000001,
+      30.6905,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_046",
+    "frame": "maktab_frame_046",
+    "building": "big_corpus",
+    "bounds": [
+      -1.3597499999999998,
+      30.610500000000002,
+      233,
+      1.5402500000000001,
+      30.6905,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_047",
+    "frame": "maktab_frame_047",
+    "building": "big_corpus",
+    "bounds": [
+      1.7465499999999998,
+      2.4747,
+      49,
+      4.64655,
+      2.5547,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_048",
+    "frame": "maktab_frame_048",
+    "building": "big_corpus",
+    "bounds": [
+      1.7465499999999998,
+      2.4747,
+      233,
+      4.64655,
+      2.5547,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_049",
+    "frame": "maktab_frame_049",
+    "building": "big_corpus",
+    "bounds": [
+      6.18175,
+      30.610500000000002,
+      49,
+      9.08175,
+      30.6905,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_050",
+    "frame": "maktab_frame_050",
+    "building": "big_corpus",
+    "bounds": [
+      6.18175,
+      30.610500000000002,
+      233,
+      9.08175,
+      30.6905,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_051",
+    "frame": "maktab_frame_051",
+    "building": "big_corpus",
+    "bounds": [
+      9.77695,
+      2.4747,
+      49,
+      12.676949999999998,
+      2.5547,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_052",
+    "frame": "maktab_frame_052",
+    "building": "big_corpus",
+    "bounds": [
+      9.77695,
+      2.4747,
+      233,
+      12.676949999999998,
+      2.5547,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_053",
+    "frame": "maktab_frame_053",
+    "building": "big_corpus",
+    "bounds": [
+      12.260000000000002,
+      30.610500000000002,
+      49,
+      15.16,
+      30.6905,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_054",
+    "frame": "maktab_frame_054",
+    "building": "big_corpus",
+    "bounds": [
+      12.260000000000002,
+      30.610500000000002,
+      233,
+      15.16,
+      30.6905,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_055",
+    "frame": "maktab_frame_055",
+    "building": "big_corpus",
+    "bounds": [
+      16.50535,
+      2.4747,
+      49,
+      19.40535,
+      2.5547,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_056",
+    "frame": "maktab_frame_056",
+    "building": "big_corpus",
+    "bounds": [
+      16.50535,
+      2.4747,
+      233,
+      19.40535,
+      2.5547,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_057",
+    "frame": "maktab_frame_057",
+    "building": "big_corpus",
+    "bounds": [
+      20.6151,
+      -2.0286,
+      49,
+      20.6951,
+      0.8714,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_058",
+    "frame": "maktab_frame_058",
+    "building": "big_corpus",
+    "bounds": [
+      20.6151,
+      -2.0286,
+      233,
+      20.6951,
+      0.8714,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_059",
+    "frame": "maktab_frame_059",
+    "building": "big_corpus",
+    "bounds": [
+      17.58055,
+      30.610500000000002,
+      49,
+      20.480549999999997,
+      30.6905,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_060",
+    "frame": "maktab_frame_060",
+    "building": "big_corpus",
+    "bounds": [
+      17.58055,
+      30.610500000000002,
+      233,
+      20.480549999999997,
+      30.6905,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_061",
+    "frame": "maktab_frame_061",
+    "building": "big_corpus",
+    "bounds": [
+      21.4282,
+      7.032899999999999,
+      49,
+      21.5082,
+      9.932899999999998,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_062",
+    "frame": "maktab_frame_062",
+    "building": "big_corpus",
+    "bounds": [
+      21.4282,
+      7.032899999999999,
+      233,
+      21.5082,
+      9.932899999999998,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_063",
+    "frame": "maktab_frame_063",
+    "building": "big_corpus",
+    "bounds": [
+      22.270467,
+      30.610500000000002,
+      49,
+      25.091033,
+      30.6905,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_064",
+    "frame": "maktab_frame_064",
+    "building": "big_corpus",
+    "bounds": [
+      22.270467,
+      30.610500000000002,
+      233,
+      25.091033,
+      30.6905,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_065",
+    "frame": "maktab_frame_065",
+    "building": "big_corpus",
+    "bounds": [
+      25.8533,
+      7.4151,
+      49,
+      25.9333,
+      10.3151,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_066",
+    "frame": "maktab_frame_066",
+    "building": "big_corpus",
+    "bounds": [
+      25.8533,
+      7.4151,
+      233,
+      25.9333,
+      10.3151,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_067",
+    "frame": "maktab_frame_067",
+    "building": "big_corpus",
+    "bounds": [
+      30.4611,
+      30.610500000000002,
+      49,
+      33.3611,
+      30.6905,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_068",
+    "frame": "maktab_frame_068",
+    "building": "big_corpus",
+    "bounds": [
+      30.4611,
+      30.610500000000002,
+      233,
+      33.3611,
+      30.6905,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_069",
+    "frame": "maktab_frame_069",
+    "building": "big_corpus",
+    "bounds": [
+      28.6018,
+      7.4151,
+      49,
+      28.6818,
+      10.3151,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_070",
+    "frame": "maktab_frame_070",
+    "building": "big_corpus",
+    "bounds": [
+      28.6018,
+      7.4151,
+      233,
+      28.6818,
+      10.3151,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_071",
+    "frame": "maktab_frame_071",
+    "building": "big_corpus",
+    "bounds": [
+      28.6052,
+      15.573599999999999,
+      49,
+      28.6852,
+      18.473599999999998,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_072",
+    "frame": "maktab_frame_072",
+    "building": "big_corpus",
+    "bounds": [
+      28.6052,
+      15.573599999999999,
+      233,
+      28.6852,
+      18.473599999999998,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_073",
+    "frame": "maktab_frame_073",
+    "building": "big_corpus",
+    "bounds": [
+      32.9026,
+      7.532699999999999,
+      49,
+      32.9826,
+      10.432699999999999,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_074",
+    "frame": "maktab_frame_074",
+    "building": "big_corpus",
+    "bounds": [
+      32.9026,
+      7.532699999999999,
+      233,
+      32.9826,
+      10.432699999999999,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_075",
+    "frame": "maktab_frame_075",
+    "building": "big_corpus",
+    "bounds": [
+      29.425758000000002,
+      13.3695,
+      49,
+      32.16204200000001,
+      13.449499999999999,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_076",
+    "frame": "maktab_frame_076",
+    "building": "big_corpus",
+    "bounds": [
+      29.425758000000002,
+      13.3695,
+      233,
+      32.16204200000001,
+      13.449499999999999,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_077",
+    "frame": "maktab_frame_077",
+    "building": "big_corpus",
+    "bounds": [
+      39.90939999999999,
+      -10.0413,
+      49,
+      42.8094,
+      -9.961300000000001,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_078",
+    "frame": "maktab_frame_078",
+    "building": "big_corpus",
+    "bounds": [
+      39.90939999999999,
+      -10.0413,
+      233,
+      42.8094,
+      -9.961300000000001,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_079",
+    "frame": "maktab_frame_079",
+    "building": "big_corpus",
+    "bounds": [
+      39.90939999999999,
+      4.5159,
+      49,
+      42.8094,
+      4.5959,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_080",
+    "frame": "maktab_frame_080",
+    "building": "big_corpus",
+    "bounds": [
+      39.90939999999999,
+      4.5159,
+      233,
+      42.8094,
+      4.5959,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_081",
+    "frame": "maktab_frame_081",
+    "building": "big_corpus",
+    "bounds": [
+      45.2569,
+      20.5977,
+      277,
+      48.15690000000001,
+      20.677699999999998,
+      330
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_082",
+    "frame": "maktab_frame_082",
+    "building": "big_corpus",
+    "bounds": [
+      45.2569,
+      30.610500000000002,
+      277,
+      48.15690000000001,
+      30.6905,
+      330
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_083",
+    "frame": "maktab_frame_083",
+    "building": "big_corpus",
+    "bounds": [
+      50.1339,
+      -10.0413,
+      49,
+      53.0339,
+      -9.961300000000001,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_084",
+    "frame": "maktab_frame_084",
+    "building": "big_corpus",
+    "bounds": [
+      50.1339,
+      -10.0413,
+      233,
+      53.0339,
+      -9.961300000000001,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_085",
+    "frame": "maktab_frame_085",
+    "building": "big_corpus",
+    "bounds": [
+      50.1339,
+      4.5159,
+      49,
+      53.0339,
+      4.5959,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_086",
+    "frame": "maktab_frame_086",
+    "building": "big_corpus",
+    "bounds": [
+      50.1339,
+      4.5159,
+      233,
+      53.0339,
+      4.5959,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_087",
+    "frame": "maktab_frame_087",
+    "building": "big_corpus",
+    "bounds": [
+      55.444900000000004,
+      -2.0265,
+      49,
+      55.5249,
+      0.8735000000000002,
+      119
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_088",
+    "frame": "maktab_frame_088",
+    "building": "big_corpus",
+    "bounds": [
+      55.444900000000004,
+      -2.0265,
+      233,
+      55.5249,
+      0.8735000000000002,
+      303
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_089",
+    "frame": "maktab_frame_089",
+    "building": "big_corpus",
+    "bounds": [
+      55.444900000000004,
+      24.194100000000002,
+      277,
+      55.5249,
+      27.0941,
+      330
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_090",
+    "frame": "maktab_frame_090",
+    "building": "big_corpus",
+    "bounds": [
+      -19.22,
+      7.2795,
+      29,
+      -17.82,
+      7.3595,
+      115
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_091",
+    "frame": "maktab_frame_091",
+    "building": "big_corpus",
+    "bounds": [
+      -19.22,
+      11.4795,
+      29,
+      -17.82,
+      11.559499999999998,
+      115
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_092",
+    "frame": "maktab_frame_092",
+    "building": "big_corpus",
+    "bounds": [
+      -19.46,
+      7.469499999999999,
+      31,
+      -19.380000000000003,
+      8.269499999999999,
+      115
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_093",
+    "frame": "maktab_frame_093",
+    "building": "big_corpus",
+    "bounds": [
+      -19.46,
+      10.5695,
+      31,
+      -19.380000000000003,
+      11.369499999999999,
+      115
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_094",
+    "frame": "maktab_frame_094",
+    "building": "small_corpus",
+    "bounds": [
+      -51.21,
+      28.55,
+      40,
+      -51.13,
+      29.95,
+      87
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_095",
+    "frame": "maktab_frame_095",
+    "building": "small_corpus",
+    "bounds": [
+      -51.21,
+      33.05,
+      40,
+      -51.13,
+      34.45,
+      87
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_096",
+    "frame": "maktab_frame_096",
+    "building": "small_corpus",
+    "bounds": [
+      -51.21,
+      37.55,
+      40,
+      -51.13,
+      38.95,
+      87
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_097",
+    "frame": "maktab_frame_097",
+    "building": "small_corpus",
+    "bounds": [
+      -51.21,
+      42.55,
+      40,
+      -51.13,
+      43.95,
+      87
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_098",
+    "frame": "maktab_frame_098",
+    "building": "small_corpus",
+    "bounds": [
+      -51.21,
+      50.05,
+      40,
+      -51.13,
+      51.45,
+      87
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_099",
+    "frame": "maktab_frame_099",
+    "building": "small_corpus",
+    "bounds": [
+      -51.21,
+      58.55,
+      40,
+      -51.13,
+      59.95,
+      87
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_100",
+    "frame": "maktab_frame_100",
+    "building": "small_corpus",
+    "bounds": [
+      -51.21,
+      28.55,
+      176,
+      -51.13,
+      29.95,
+      223
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_101",
+    "frame": "maktab_frame_101",
+    "building": "small_corpus",
+    "bounds": [
+      -51.21,
+      33.05,
+      176,
+      -51.13,
+      34.45,
+      223
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_102",
+    "frame": "maktab_frame_102",
+    "building": "small_corpus",
+    "bounds": [
+      -51.21,
+      37.55,
+      176,
+      -51.13,
+      38.95,
+      223
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_103",
+    "frame": "maktab_frame_103",
+    "building": "small_corpus",
+    "bounds": [
+      -51.21,
+      42.55,
+      176,
+      -51.13,
+      43.95,
+      223
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_104",
+    "frame": "maktab_frame_104",
+    "building": "small_corpus",
+    "bounds": [
+      -51.21,
+      50.05,
+      176,
+      -51.13,
+      51.45,
+      223
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_105",
+    "frame": "maktab_frame_105",
+    "building": "small_corpus",
+    "bounds": [
+      -51.21,
+      58.55,
+      176,
+      -51.13,
+      59.95,
+      223
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_106",
+    "frame": "maktab_frame_106",
+    "building": "small_corpus",
+    "bounds": [
+      -24.15,
+      35.5654,
+      48,
+      -24.07,
+      37.2654,
+      95
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_107",
+    "frame": "maktab_frame_107",
+    "building": "small_corpus",
+    "bounds": [
+      -24.15,
+      35.5654,
+      176,
+      -24.07,
+      37.2654,
+      223
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_108",
+    "frame": "maktab_frame_108",
+    "building": "small_corpus",
+    "bounds": [
+      -24.15,
+      49.6126,
+      48,
+      -24.07,
+      51.3126,
+      95
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_109",
+    "frame": "maktab_frame_109",
+    "building": "small_corpus",
+    "bounds": [
+      -24.15,
+      49.6126,
+      176,
+      -24.07,
+      51.3126,
+      223
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_110",
+    "frame": "maktab_frame_110",
+    "building": "small_corpus",
+    "bounds": [
+      -44.89620000000001,
+      24.94,
+      48,
+      -43.196200000000005,
+      25.02,
+      95
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_111",
+    "frame": "maktab_frame_111",
+    "building": "small_corpus",
+    "bounds": [
+      -44.89620000000001,
+      24.94,
+      176,
+      -43.196200000000005,
+      25.02,
+      223
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_112",
+    "frame": "maktab_frame_112",
+    "building": "small_corpus",
+    "bounds": [
+      -35.9664,
+      24.94,
+      48,
+      -34.2664,
+      25.02,
+      95
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_113",
+    "frame": "maktab_frame_113",
+    "building": "small_corpus",
+    "bounds": [
+      -35.9664,
+      24.94,
+      176,
+      -34.2664,
+      25.02,
+      223
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_114",
+    "frame": "maktab_frame_114",
+    "building": "small_corpus",
+    "bounds": [
+      -30.013199999999998,
+      24.94,
+      48,
+      -28.3132,
+      25.02,
+      95
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_115",
+    "frame": "maktab_frame_115",
+    "building": "small_corpus",
+    "bounds": [
+      -30.013199999999998,
+      24.94,
+      176,
+      -28.3132,
+      25.02,
+      223
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_116",
+    "frame": "maktab_frame_116",
+    "building": "small_corpus",
+    "bounds": [
+      -44.89620000000001,
+      63.96,
+      48,
+      -43.196200000000005,
+      64.04,
+      95
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_117",
+    "frame": "maktab_frame_117",
+    "building": "small_corpus",
+    "bounds": [
+      -44.89620000000001,
+      63.96,
+      176,
+      -43.196200000000005,
+      64.04,
+      223
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_118",
+    "frame": "maktab_frame_118",
+    "building": "small_corpus",
+    "bounds": [
+      -35.9664,
+      63.96,
+      48,
+      -34.2664,
+      64.04,
+      95
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_119",
+    "frame": "maktab_frame_119",
+    "building": "small_corpus",
+    "bounds": [
+      -35.9664,
+      63.96,
+      176,
+      -34.2664,
+      64.04,
+      223
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_120",
+    "frame": "maktab_frame_120",
+    "building": "small_corpus",
+    "bounds": [
+      -30.013199999999998,
+      63.96,
+      48,
+      -28.3132,
+      64.04,
+      95
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_121",
+    "frame": "maktab_frame_121",
+    "building": "small_corpus",
+    "bounds": [
+      -30.013199999999998,
+      63.96,
+      176,
+      -28.3132,
+      64.04,
+      223
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_122",
+    "frame": "maktab_frame_122",
+    "building": "annex",
+    "bounds": [
+      -24.15,
+      40.259499999999996,
+      160,
+      -24.07,
+      41.4615,
+      207
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_123",
+    "frame": "maktab_frame_123",
+    "building": "annex",
+    "bounds": [
+      -24.15,
+      44.1655,
+      160,
+      -24.07,
+      45.36750000000001,
+      207
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_124",
+    "frame": "maktab_frame_124",
+    "building": "annex",
+    "bounds": [
+      -11.1,
+      40.259499999999996,
+      160,
+      -11.020000000000001,
+      41.4615,
+      207
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_125",
+    "frame": "maktab_frame_125",
+    "building": "annex",
+    "bounds": [
+      -11.1,
+      44.1655,
+      160,
+      -11.020000000000001,
+      45.36750000000001,
+      207
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_126",
+    "frame": "maktab_frame_126",
+    "building": "annex",
+    "bounds": [
+      -21.0585,
+      37.24,
+      160,
+      -19.5925,
+      37.32,
+      207
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_127",
+    "frame": "maktab_frame_127",
+    "building": "annex",
+    "bounds": [
+      -16.752,
+      37.24,
+      160,
+      -15.286000000000001,
+      37.32,
+      207
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_128",
+    "frame": "maktab_frame_128",
+    "building": "annex",
+    "bounds": [
+      -13.880999999999998,
+      37.24,
+      160,
+      -12.415,
+      37.32,
+      207
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_129",
+    "frame": "maktab_frame_129",
+    "building": "annex",
+    "bounds": [
+      -21.0585,
+      48.09,
+      160,
+      -19.5925,
+      48.17,
+      207
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_130",
+    "frame": "maktab_frame_130",
+    "building": "annex",
+    "bounds": [
+      -16.752,
+      48.09,
+      160,
+      -15.286000000000001,
+      48.17,
+      207
+    ],
+    "frame_brushes": 7
+  },
+  {
+    "glass": "maktab_glass_131",
+    "frame": "maktab_frame_131",
+    "building": "annex",
+    "bounds": [
+      -13.880999999999998,
+      48.09,
+      160,
+      -12.415,
+      48.17,
+      207
+    ],
+    "frame_brushes": 7
+  }
+]

@@ -1,0 +1,87 @@
+// Standalone entity definitions for de_3_maktab; use without additional base FGDs.
+@PointClass size(-8 -8 -8, 8 8 8) = ambient_generic : "ambient_generic"
+[
+    health(string) : "health" : "2"
+    message(string) : "message" : "maktab/courtyard_radio.wav"
+    origin(string) : "origin" : "-652 976 160"
+    pitch(string) : "pitch" : "100"
+    spawnflags(string) : "spawnflags" : "2"
+    targetname(string) : "targetname" : "maktab_library_music"
+]
+
+@SolidClass = func_bomb_target : "func_bomb_target"
+[
+]
+
+@SolidClass = func_breakable : "func_breakable"
+[
+    health(string) : "health" : "20"
+    material(string) : "material" : "0"
+    renderamt(string) : "renderamt" : "155"
+    rendermode(string) : "rendermode" : "2"
+
+    targetname(string) : "targetname" : ""
+
+    target(string) : "target" : ""
+
+    origin(string) : "origin" : "0 0 0"
+]
+
+@SolidClass = func_buyzone : "func_buyzone"
+[
+    team(string) : "team" : "1"
+]
+
+@SolidClass = func_door_rotating : "func_door_rotating"
+[
+    angles(string) : "angles" : "0 0 0"
+    distance(string) : "distance" : "90"
+    dmg(string) : "dmg" : "0"
+    movesnd(string) : "movesnd" : "8"
+    renderamt(string) : "renderamt" : "255"
+    rendermode(string) : "rendermode" : "0"
+    spawnflags(string) : "spawnflags" : "32"
+    speed(string) : "speed" : "100"
+    stopsnd(string) : "stopsnd" : "0"
+    wait(string) : "wait" : "-1"
+]
+
+@PointClass size(-8 -8 -8, 8 8 8) = info_map_parameters : "info_map_parameters"
+[
+    buying(string) : "buying" : "0"
+    origin(string) : "origin" : "1120 -800 64"
+]
+
+@PointClass size(-8 -8 -8, 8 8 8) = info_player_deathmatch : "info_player_deathmatch"
+[
+    angle(string) : "angle" : "270"
+    origin(string) : "origin" : "-480 1600 160"
+]
+
+@PointClass size(-8 -8 -8, 8 8 8) = info_player_start : "info_player_start"
+[
+    angle(string) : "angle" : "180"
+    origin(string) : "origin" : "3231 -1000 216"
+]
+
+@PointClass size(-8 -8 -8, 8 8 8) = light : "light"
+[
+    _light(string) : "_light" : "255 240 215 230"
+    origin(string) : "origin" : "2586 1000 84"
+]
+
+@PointClass size(-8 -8 -8, 8 8 8) = light_environment : "light_environment"
+[
+    _ambient(string) : "_ambient" : "160 158 145 65"
+    _light(string) : "_light" : "255 238 201 295"
+    angles(string) : "angles" : "-55 225 0"
+    origin(string) : "origin" : "1120 -800 440"
+]
+
+@SolidClass = worldspawn : "worldspawn"
+[
+    mapversion(string) : "mapversion" : "220"
+    message(string) : "message" : "3-MAKTAB | School, Uzbekistan"
+    skyname(string) : "skyname" : "Des"
+    wad(string) : "wad" : "N:/3_maktab_map/MANUAL_EDIT_FINAL/sdhlt.wad;N:/Counter-Strike 1.6/cstrike/cstrike.wad;N:/Counter-Strike 1.6/cstrike/cs_office.wad;N:/Counter-Strike 1.6/cstrike/cs_dust.wad;N:/Counter-Strike 1.6/valve/halflife.wad;N:/3_maktab_map/MANUAL_EDIT_FINAL/3_maktab.wad"
+]

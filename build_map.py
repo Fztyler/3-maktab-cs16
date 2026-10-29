@@ -18,6 +18,14 @@ TOOL_WAD = ROOT / "tools" / "sdhlt" / "sdhlt-v1.3.1" / "tools" / "sdhlt.wad"
 S = 40.0
 T = 4.0 / S
 world = []
+static_details = []
+window_units = []
+window_building = "annex"
+door_units = []
+SMALL_UP = 136
+SMALL_ROOF = 256
+toilet_shifts = {}
+annex_layouts = {}
 entities = []
 decor_groups = {}
 
@@ -33,7 +41,12 @@ def Y(y):
 def bounds(name):
     obj = bpy.data.objects[name]
     p = [obj.matrix_world @ Vector(v) for v in obj.bound_box]
-    return tuple((min(v[i] for v in p), max(v[i] for v in p)) for i in range(3))
+    result=tuple((min(v[i] for v in p), max(v[i] for v in p)) for i in range(3))
+    if name in ("new_toilet","old_toiled","t_toilet"):
+        offset=69.0-.6-result[0][1]
+        toilet_shifts[name]=offset
+        result=((result[0][0]+offset,result[0][1]+offset),*result[1:])
+    return result
 
 
 def fmt(n):
@@ -117,6 +130,9 @@ def prism_yz(points,x0,x1,tex):
 
 
 def ent(kind, xyz=None, brushes=None, **kv):
+    if kind=="func_illusionary" and not kv.get("rendermode"):
+        static_details.extend(b for b in (brushes or []) if b)
+        return
     data = {"classname":kind, **{k:str(v) for k,v in kv.items()}}
     if xyz is not None:
         x,y,z=xyz
@@ -130,6 +146,8 @@ def ent(kind, xyz=None, brushes=None, **kv):
 def prop(name,x,y,z=0,yaw=0,solid=None):
     ent("cycler_sprite",(x,y,z),model=f"models/maktab/{name}.mdl",
         angles=f"0 {yaw} 0",framerate="0")
+    if solid is None and name=="hall_chair":
+        solid=(20,20,22)
     if solid:
         w,d,h=solid
         if yaw%180==90:
@@ -152,23 +170,79 @@ def deco(x0,y0,z0,x1,y1,z1,tex,**kv):
 
 
 def glass_pane(x0,y0,z0,x1,y1,z1):
-    ent("func_breakable", brushes=[brush(x0,y0,z0,x1,y1,z1,"WINDOW_GLASS")],
-        material="0", health="20", rendermode="2", renderamt="105")
-
-
-def hinged_door(axis,fixed,a,b,z):
-    # A visible opaque leaf, rotating about an explicit hinge; E toggles it.
-    if axis=="x":
-        panel=brush(fixed-.05,a+.05,z,fixed+.05,b-.05,z+94,"CLASS_DOOR",scale_u=.75,scale_v=.75)
-        hinge=(fixed,a+.05)
+    # Glass can break alone; destroying the painted wooden frame fires its glass target.
+    glazing=brush(x0,y0,z0,x1,y1,z1,"WINDOW_GLASS")
+    unit=[]
+    def frame(*args):
+        b=brush(*args)
+        if b: unit.append(b)
+    if x1-x0<y1-y0:
+        frame(x0-.04,y0-.06,z0-2,x1+.04,y1+.06,z0+2,"SCHOOL_WHITE")
+        frame(x0-.04,y0-.06,z1-2,x1+.04,y1+.06,z1+2,"SCHOOL_WHITE")
+        for yy in (y0,y0+(y1-y0)/3,y0+2*(y1-y0)/3,y1): frame(x0-.04,yy-.05,z0,x1+.04,yy+.05,z1,"SCHOOL_WHITE")
+        frame(x0-.04,y0,z1-18,x1+.04,y1,z1-15,"SCHOOL_WHITE")
     else:
-        panel=brush(a+.05,fixed-.05,z,b-.05,fixed+.05,z+94,"CLASS_DOOR",scale_u=.75,scale_v=.75)
-        hinge=(a+.05,fixed)
+        frame(x0-.06,y0-.04,z0-2,x1+.06,y1+.04,z0+2,"SCHOOL_WHITE")
+        frame(x0-.06,y0-.04,z1-2,x1+.06,y1+.04,z1+2,"SCHOOL_WHITE")
+        for xx in (x0,x0+(x1-x0)/3,x0+2*(x1-x0)/3,x1): frame(xx-.05,y0-.04,z0,xx+.05,y1+.04,z1,"SCHOOL_WHITE")
+
+        frame(x0,y0-.04,z1-18,x1,y1+.04,z1-15,"SCHOOL_WHITE")
+
+    center=((x0+x1)/2,(y0+y1)/2,(z0+z1)/2)
+    origin=(X(center[0]),Y(center[1]),round(center[2]))
+    # Identical windows use the same local texture projection, enabling safe
+    # submodel sharing without coupling their damage or trigger state.
+    def local_uv(raw):
+        out=[]
+        import re
+        for line in raw.splitlines():
+            if not line.startswith('('):out.append(line);continue
+            prefix,tex,*uv=line.rsplit(' ',6)
+            pts=[tuple(map(float,p.split())) for p in re.findall(r'\(\s*([^()]*)\)',prefix)]
+            a,b,c=pts;u=[b[j]-a[j] for j in range(3)];v=[c[j]-a[j] for j in range(3)]
+            normal=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]]
+            axis=max([2,0,1],key=lambda j:abs(normal[j]))
+            shiftu=-origin[1] if axis==0 else -origin[0]
+            shiftv=origin[1] if axis==2 else origin[2]
+            out.append(f'{prefix} {tex} {shiftu} {shiftv} 0 1 1')
+        return '\n'.join(out)
+    glazing=local_uv(glazing);unit=[local_uv(b) for b in unit]
+    index=len(window_units)
+    glass_target="maktab_glass_%03d" % index
+    frame_target="maktab_frame_%03d" % index
+    ent("func_breakable",center,brushes=[glazing],targetname=glass_target,material="0",health="20",rendermode="2",renderamt="155")
+    ent("func_breakable",center,brushes=unit,targetname=frame_target,target=glass_target,material="1",health="35",rendermode="0",renderamt="255",explosion="0")
+    window_units.append(dict(glass=glass_target,frame=frame_target,building=window_building,bounds=[x0,y0,z0,x1,y1,z1],frame_brushes=len(unit)))
+
+
+
+def hinged_door(axis,fixed,a,b,z,hinge_end=False,texture="CLASS_DOOR"):
+    # The opaque leaf meets a solid three-sided box: no open strips around it.
+    jamb=.075
+    if axis=="x":
+        add(fixed-.09,a,z,fixed+.09,a+jamb,z+96,"DESK_WOOD")
+        add(fixed-.09,b-jamb,z,fixed+.09,b,z+96,"DESK_WOOD")
+        add(fixed-.09,a,z+94,fixed+.09,b,z+96,"DESK_WOOD")
+    else:
+        add(a,fixed-.09,z,a+jamb,fixed+.09,z+96,"DESK_WOOD")
+        add(b-jamb,fixed-.09,z,b,fixed+.09,z+96,"DESK_WOOD")
+        add(a,fixed-.09,z+94,b,fixed+.09,z+96,"DESK_WOOD")
+    lo=Y(a+jamb) if axis=="x" else X(a+jamb)
+    hi=Y(b-jamb) if axis=="x" else X(b-jamb)
+    su=(hi-lo)/128.0
+    sv=94.0/(256.0 if texture=="ENTRY_DOOR" else 128.0)
+    if axis=="x":
+        panel=brush(fixed-.05,a+jamb,z,fixed+.05,b-jamb,z+94,texture,shift_u=-lo/su,shift_v=(z+94)/sv,scale_u=su,scale_v=sv)
+        hinge=(fixed,b-jamb if hinge_end else a+jamb)
+    else:
+        panel=brush(a+jamb,fixed-.05,z,b-jamb,fixed+.05,z+94,texture,shift_u=-lo/su,shift_v=(z+94)/sv,scale_u=su,scale_v=sv)
+        hinge=(b-jamb if hinge_end else a+jamb,fixed)
     hx,hy=hinge
     origin=brush(hx-.1,hy-.1,z+44,hx+.1,hy+.1,z+52,"ORIGIN")
     ent("func_door_rotating",brushes=[panel,origin],angles="0 0 0",distance="90",
-        speed="100",wait="-1",dmg="0",movesnd="8",stopsnd="0",spawnflags="288",
+        speed="100",wait="-1",dmg="0",movesnd="8",stopsnd="0",spawnflags="32",
         rendermode="0",renderamt="255")
+    door_units.append(dict(axis=axis,fixed=fixed,opening=[a,b],floor=z,jamb=jamb))
 
 
 def toilet_door(x0,y0,door_side,door_loc):
@@ -204,35 +278,22 @@ def classroom(room_x0,room_x1,a,b,z,variant):
     room_decor=[]
     def detail(x0,y0,z0,x1,y1,z1,tex):
         room_decor.append(brush(x0,y0,z0,x1,y1,z1,tex))
-    # North wall teaching board, one of two wall charts, and a low cupboard.
-    detail(mid-1.65,b-.16,z+44,mid+1.65,b-.09,z+82,"BLACKBOARD")
+    # No wall plaques or charts: these previously covered exterior glazing.
     theme=variant%4
-    poster="POSTER_MATH" if theme in (0,2) else "POSTER_GEO"
-    detail(room_x0+.35,b-.16,z+55,room_x0+1.5,b-.09,z+86,poster)
     add(room_x1-1.0,b-.68,z,room_x1-.3,b-.25,z+56,
         "SCHOOL_WHITE" if theme==2 else "DESK_WOOD")
     # Teacher's desk and varied pupil rows. The room doorway and a central
     # aisle remain unobstructed for players and bots.
     add(mid-.75,b-1.18,z+29,mid+.75,b-.58,z+34,"DESK_WOOD")
-    rows=2 if b-a>4.7 else 1
-    if theme==2:
-        # Science classroom: paired long work benches and a washing corner.
-        for yy in (a+1.05,a+2.4)[:rows]:
-            add(mid-2.4,yy-.34,z+29,mid-.45,yy+.34,z+34,"SINK_TILE")
-            add(mid+.45,yy-.34,z+29,mid+2.4,yy+.34,z+34,"SINK_TILE")
-        sink(room_x1-1.55,b-1.0,z)
-    elif theme==3:
-        # Art room: grouped square tables and display panels.
-        for xx in (mid-1.8,mid+1.8):
-            add(xx-.58,a+.68,z+28,xx+.58,a+1.55,z+32,"DESK_WOOD")
-            detail(xx-.46,a+.33,z,xx+.46,a+.62,z+20,"SCHOOL_RED")
-        detail(room_x1-.18,a+.40,z+50,room_x1-.10,a+1.7,z+82,"POSTER_GEO")
-    else:
-        for row in range(rows):
-            yy=a+1.08+row*1.18
-            for xx in (mid-1.65,mid+1.65):
-                add(xx-.51,yy-.28,z+27,xx+.51,yy+.28,z+31,"DESK_WOOD")
-                detail(xx-.34,yy-.57,z,xx+.34,yy-.25,z+20,"SCHOOL_GREEN")
+    rows=min(5,max(1,int((b-a-1.5)/.91)))
+    banks=3 if room_x1-room_x0>=6.4 else 2
+    for row in range(rows):
+        yy=a+.9+row*.91
+        for col in range(banks):
+            xx=mid+(col-(banks-1)/2)*((room_x1-room_x0-1.3)/banks)
+            static_details.append(brush(xx-.65,yy-.24,z+28,xx+.65,yy+.24,z+32,"DESK_WOOD"))
+            for seat in (-.34,.34): prop("hall_chair",xx+seat,yy-.48,z)
+    if theme==2: sink(room_x1-1.55,b-1.0,z)
     if theme==1:
         detail(room_x0+.30,a+.28,z+12,room_x0+1.25,a+.9,z+68,"DESK_WOOD")
     # Small original studio props give the rooms distinct functions.
@@ -315,33 +376,40 @@ def school(name, corridor, bands, entrance="south", stair=True):
     add(x0,y0,-8,c0,y1,8,"CLASS_WALL",top="CLASS_FLOOR")
     add(c0,y0,-8,c1,y1,8,"CLASS_WALL",top="HALL_FLOOR")
     add(c1,y0,-8,x1,y1,8,"CLASS_WALL",top="CLASS_FLOOR")
-    # Leave a stairwell void in the second floor slab.
+    # The stair occupies the east end of the west room, beside a 1.5 m access lane.
+    stair_x0,stair_x1=x1-3.2,x1-.35
+    stair_y0,stair_y1=bands[-2]+1.35,y1-1.25
     if stair:
-        cut_y=bands[1]
-        add(x0,cut_y,110,c0,y1,120,"CLASS_WALL",top="CLASS_FLOOR")
-        add(c0,y0,110,c1,y1,120,"CLASS_WALL",top="HALL_FLOOR")
-        add(c1,y0,110,x1,y1,120,"CLASS_WALL",top="CLASS_FLOOR")
+        add(x0,y0,SMALL_UP-10,c0,y1,SMALL_UP,"CLASS_WALL",top="CLASS_FLOOR")
+        add(c1,y0,SMALL_UP-10,stair_x0,y1,SMALL_UP,"CLASS_WALL",top="CLASS_FLOOR")
+        add(stair_x1,y0,SMALL_UP-10,x1,y1,SMALL_UP,"CLASS_WALL",top="CLASS_FLOOR")
+        add(stair_x0,y0,SMALL_UP-10,stair_x1,stair_y0,SMALL_UP,"CLASS_WALL",top="CLASS_FLOOR")
+        add(stair_x0,stair_y1,SMALL_UP-10,stair_x1,y1,SMALL_UP,"CLASS_WALL",top="CLASS_FLOOR")
+        add(c0,y0,SMALL_UP-10,c1,y1,SMALL_UP,"CLASS_WALL",top="HALL_FLOOR")
     else:
-        add(x0,y0,110,x1,y1,120,"CLASS_WALL",top="CLASS_FLOOR")
-    add(x0,y0,224,x1,y1,236,"CEILING_WHITE",top="Core_Urban_040")
+        add(x0,y0,SMALL_UP-10,x1,y1,SMALL_UP,"CLASS_WALL",top="CLASS_FLOOR")
+    add(x0,y0,SMALL_ROOF,x1,y1,SMALL_ROOF+12,"CEILING_WHITE",top="Core_Urban_040")
     # External masonry; the courtyard side of each school is the main facade.
     west_windows=True
     if name=="small_corpus":
         # Two distinct second-floor windows face west from the library.
         west_windows=[(a,a+1.5,39,88) for a in (28.5,33.0,37.5,42.5,50.0,58.5)]
-        west_windows += [(a,a+1.5,159,208) for a in (28.5,33.0,37.5,42.5,50.0,58.5)]
+        west_windows += [(a,a+1.5,175,224) for a in (28.5,33.0,37.5,42.5,50.0,58.5)]
     west_door=(44.9,48.5) if name=="small_corpus" else None
-    wall_x(x0,y0,y1,8,224,"SCHOOL_CREAM", door=west_door if entrance=="west" else None, window=west_windows)
+    wall_x(x0,y0,y1,8,SMALL_ROOF,"SCHOOL_CREAM", door=west_door if entrance=="west" else None, window=west_windows)
     east_door = (-3.9,-1.1) if name=="big_corpus1" else (41.0,44.0) if name=="small_corpus" else None
-    wall_x(x1,y0,y1,8,224,"SCHOOL_CREAM",door=east_door,window=True)
-    wall_y(y0,x0,x1,8,224,"SCHOOL_CREAM",door=(c0,c1) if entrance=="south" else None,window=True)
+    upper_windows=lambda lo,hi,fractions: [(lo+(hi-lo)*f,lo+(hi-lo)*f+min(1.8,(hi-lo)*.12),z+39,z+88) for f in fractions for z in (8,SMALL_UP)]
+    wall_x(x1,y0,y1,8,SMALL_ROOF,"SCHOOL_CREAM",door=east_door,window=upper_windows(y0,y1,(.27,.63)))
+    wall_y(y0,x0,x1,8,SMALL_ROOF,"SCHOOL_CREAM",door=(c0,c1) if entrance=="south" else None,window=upper_windows(x0,x1,(.23,.56,.78)))
+    if west_door and entrance=="west": hinged_door("x",x0,*west_door,8,texture="ENTRY_DOOR")
+    if east_door: hinged_door("x",x1,*east_door,8)
     if name=="big_corpus1":
-        wall_y(y1,x0,c0,8,224,"SCHOOL_CREAM")
-        wall_y(y1,c1,x1,8,224,"SCHOOL_CREAM")
+        wall_y(y1,x0,c0,8,SMALL_ROOF,"SCHOOL_CREAM")
+        wall_y(y1,c1,x1,8,SMALL_ROOF,"SCHOOL_CREAM")
     else:
-        wall_y(y1,x0,x1,8,224,"SCHOOL_CREAM",window=True)
+        wall_y(y1,x0,x1,8,SMALL_ROOF,"SCHOOL_CREAM",window=upper_windows(x0,x1,(.23,.56,.78)))
     # Red plinth, white roof edge and pale window surrounds mirror the school.
-    for z0,z1,material in ((8,22,"SCHOOL_RED"),(219,230,"SCHOOL_WHITE")):
+    for z0,z1,material in ((8,22,"SCHOOL_RED"),(SMALL_ROOF-5,SMALL_ROOF+6,"SCHOOL_WHITE")):
         ny=math.ceil((y1-y0+.26)/8)
         for i in range(ny):
             a=y0-.13+(y1-y0+.26)*i/ny
@@ -356,14 +424,11 @@ def school(name, corridor, bands, entrance="south", stair=True):
     # Classrooms on each side of a north-south corridor.
     corridor_trim=[]
     for a,b in zip(bands,bands[1:]):
-        for z in (8,120):
-            # Stair room has an opening at opposite ends on the two floors.
-            west_door=(a+.30,a+2.30) if stair and a==bands[0] and z==8 else (b-2.30,b-.30)
-            if not (stair and a==bands[0]):
-                west_door=((a+b)/2-1.0,(a+b)/2+1.0)
+        for z in (8,SMALL_UP):
+            west_door=((a+b)/2-1.0,(a+b)/2+1.0)
             east_door=((a+b)/2-1.0,(a+b)/2+1.0)
-            wall_x(c0,a,b,z,z+102,"CLASS_WALL",door=west_door)
-            wall_x(c1,a,b,z,z+102,"CLASS_WALL",door=east_door)
+            wall_x(c0,a,b,z,z+118 if z==8 else SMALL_ROOF,"CLASS_WALL",door=west_door)
+            wall_x(c1,a,b,z,z+118 if z==8 else SMALL_ROOF,"CLASS_WALL",door=east_door)
             classroom_door(c0,*west_door,z)
             classroom_door(c1,*east_door,z)
             for lo,hi in ((a,west_door[0]),(west_door[1],b)):
@@ -373,36 +438,32 @@ def school(name, corridor, bands, entrance="south", stair=True):
                 if hi-lo>.20:
                     corridor_trim.append(brush(c1-.18,lo,z+2,c1-.10,hi,z+18,"SCHOOL_RED"))
         if b != bands[-1]:
-            wall_y(b,x0,c0,8,224,"CLASS_WALL")
-            wall_y(b,c1,x1,8,224,"CLASS_WALL")
-    # Solid 8-unit steps, comfortable for GoldSrc player collision.
+            wall_y(b,x0,c0,8,SMALL_ROOF,"CLASS_WALL")
+            wall_y(b,c1,x1,8,SMALL_ROOF,"CLASS_WALL")
     if stair:
-        step_y0=y0+.45
-        step_y1=bands[1]-.25
         n=14
-        rail_x=x0+3.27
         for i in range(n):
-            a=step_y0+(step_y1-step_y0)*i/n
-            b=step_y0+(step_y1-step_y0)*(i+1)/n
-            rise=8+(i+1)*8
-            add(x0+.55,a,8,x0+3.15,b,rise,"STAIR_STONE",top="STAIR_STONE")
-        # A single solid parapet follows the steps and reaches the lower floor.
-        # Separate balusters read as floating pieces at GoldSrc resolution.
-        prism_yz([(step_y0,8),(step_y1,8),(step_y1,160),(step_y0,56)],
-                 rail_x-.12,rail_x+.12,"CLASS_WALL")
-        ent("light",(c0-.9,(y0+bands[1])/2,185),_light="215 222 255 170")
+            a=stair_y0+(stair_y1-stair_y0)*i/n
+            b=stair_y0+(stair_y1-stair_y0)*(i+1)/n
+            add(stair_x0,a,8,stair_x1,b,8+(i+1)*(SMALL_UP-8)/n,"STAIR_STONE")
+        prism_yz([(stair_y0,8),(stair_y1,8),(stair_y1,SMALL_UP+40),(stair_y0,48)],
+                 stair_x0-.10,stair_x0+.10,"CLASS_WALL")
+        add(stair_x0-.08,stair_y0,SMALL_UP,stair_x0+.08,stair_y1-.7,SMALL_UP+40,"CLASS_WALL")
+        ent("light",(c0-.7,(y0+bands[1])/2,SMALL_UP+65),_light="255 238 210 170")
+        import json
+        (ROOT/"small_stair_layout.json").write_text(json.dumps(dict(bounds=[x0,x1,y0,y1],stairs=[stair_x0,stair_x1,stair_y0,stair_y1],lane=[c1,stair_x0,bands[-2],y1],upper_floor_z=SMALL_UP,roof_z=SMALL_ROOF)))
     ent("func_illusionary",brushes=corridor_trim)
     # Corridor lighting, plus room lighting on both levels.
-    for z in (101,213):
+    for z in (117,245):
         for a,b in zip(bands,bands[1:]):
             yc=(a+b)/2
             ent("light",((c0+c1)/2,yc,z),_light="255 240 205 145")
             ent("light",((x0+c0)/2,yc,z),_light="255 240 215 125")
             ent("light",((c1+x1)/2,yc,z),_light="255 240 215 125")
     for band_index,(a,b) in enumerate(zip(bands,bands[1:])):
-        for floor,z in enumerate((8,120)):
+        for floor,z in enumerate((8,SMALL_UP)):
             for side,(lo,hi) in enumerate(((x0,c0),(c1,x1))):
-                if stair and band_index==0 and side==0:
+                if stair and band_index==len(bands)-2 and side==1:
                     continue
                 if name=="small_corpus" and floor==1 and side==0 and band_index in (2,3,4):
                     continue  # Library and Terrorist spawn rooms.
@@ -413,26 +474,30 @@ def school(name, corridor, bands, entrance="south", stair=True):
 
 
 # Coordinates are read from the actual named objects in the user's scene.
+window_building='big_corpus'
 exec(compile((ROOT/'rebuild_big.py').read_text(encoding='utf8'),str(ROOT/'rebuild_big.py'),'exec'))
 
+window_building="small_corpus"
 small=school("small_corpus",(-38.4,-34.5),[24.98,31.2,35.78,45.63,54.67,64.0],"west")
 
 # The western middle room upstairs is the library. Bookcases keep the
 # central planting area clear and leave its corridor doorway accessible.
 for x0,x1,y0,y1 in ((-47.7,-47.0,35.9,37.2),(-47.7,-47.0,44.2,45.2),
                     (-40.0,-39.3,36.4,38.8),(-40.0,-39.3,42.7,44.9)):
-    add(x0,y0,120,x1,y1,185,"DESK_WOOD",top="DESK_WOOD")
-    for z in (140,160,180):
+    add(x0,y0,SMALL_UP,x1,y1,SMALL_UP+65,"DESK_WOOD",top="DESK_WOOD")
+    for z in (SMALL_UP+20,SMALL_UP+40,SMALL_UP+60):
         add(x0,y0,z,x1,y1,z+3,"DESK_WOOD")
-add(-45.8,44.1,120,-43.8,44.8,149,"DESK_WOOD")
-prop("books",-45.2,44.4,149)
-prop("radio",-44.3,44.4,149)
-ent("ambient_generic",(-44.3,44.4,160),targetname="maktab_library_music",
+add(-45.8,44.1,SMALL_UP,-43.8,44.8,SMALL_UP+29,"DESK_WOOD")
+prop("books",-45.2,44.4,SMALL_UP+29)
+prop("radio",-44.3,44.4,SMALL_UP+29)
+ent("ambient_generic",(-44.3,44.4,SMALL_UP+40),targetname="maktab_library_music",
     message="maktab/courtyard_radio.wav",health="2",pitch="100",spawnflags="2")
 
 
 def annex(name,height,tex,door_side,door_loc):
+    height+=16
     (x0,x1),(y0,y1),_=bounds(name)
+    if name=="new_toilet": door_loc=(-2.0+toilet_shifts[name],toilet_shifts[name])
     x0,x1,y0,y1=map(lambda n:round(n,2),(x0,x1,y0,y1))
     if name=="sport зал":
         x1=22.0
@@ -474,18 +539,22 @@ def annex(name,height,tex,door_side,door_loc):
         deco(x1+.10,y0,8,x1+.18,y1,23,"SCHOOL_RED")
         deco(x0,y1+.10,8,x1,y1+.18,23,"SCHOOL_RED")
     ent("light",((x0+x1)/2,(y0+y1)/2,height-20),_light="255 240 215 230")
+    annex_layouts[name]=[x0,x1,y0,y1]
     return (x0,x1,y0,y1)
 
 
+window_building="annex"
 annex("sport зал.Mini",248,"SCHOOL_CREAM","west",(41.0,44.0))
 
 # Courtyard buildings. Doorways point to the open paths.
-annex("new_toilet",112,"SCHOOL_CREAM","south",(-2.0,0.0))
+annex("new_toilet",112,"SCHOOL_CREAM","south",(16.0,18.0))
 old_toilet=annex("old_toiled",104,"SCHOOL_CREAM","west",(37.0,39.0))
 annex("t_toilet",104,"SCHOOL_CREAM","west",(44.0,46.0))
-deco(old_toilet[0]-.23,39.2,18,old_toilet[0]-.15,41.9,44,"SITE_B")
-add(9.0,34.2,0,14.0,42.15,3,"CSTRIKE_FT4APHT")
-add(9.0,42.2,0,16.6,47.8,3,"CSTRIKE_FT4APHT")
+add(58.8,34.2,0,63.0,42.15,3,"CSTRIKE_FT4APHT")
+add(58.8,42.2,0,65.3,47.8,3,"CSTRIKE_FT4APHT")
+
+add(32.0,32.0,0,61.0,34.0,2,"CSTRIKE_FT4APHT")
+add(59.0,33.8,0,61.5,54.0,2,"CSTRIKE_FT4APHT")
 
 # Mid-century school colors and glazed entrance canopy, with Uzbek signs.
 for x0,x1,y in ((-32.5,-23.2,-23.0),(-52.8,-49.0,47.9)):
@@ -498,26 +567,25 @@ for yy in (45.1,48.25):
         xx=-53.5+i*.45
         add(xx,yy-.13,8,xx+.24,yy+.13,39+i*18,"SCHOOL_WHITE")
 deco(-51.50,45.3,9,-51.43,48.0,80,"WINDOW_GLASS",rendermode="2",renderamt="130")
-deco(-45.3,24.60,140,-39.1,24.70,187,"MAKTAB_SIGN")
 
 # Outdoor world shell. All air and buildings are inside a sealed sky volume.
-add(-83,-80,-96,53,96,-16,"CSTRIKE_FT2DIRT")
-add(-83,-80,-16,53,96,0,"CSTRIKE_FT3GRAS")
+add(-83,-80,-96,73.0,96,-16,"CSTRIKE_FT2DIRT")
+add(-83,-80,-16,73.0,96,0,"CSTRIKE_FT3GRAS")
 add(-84,-81,-96,-82.5,97,576,"sky")
-add(52.5,-81,-96,54,97,576,"sky")
-add(-84,-81,-96,54,-79.5,576,"sky")
-add(-84,95.5,-96,54,97,576,"sky")
-add(-84,-81,576,54,97,608,"sky")
+add(72.5,-81,-96,74.0,97,576,"sky")
+add(-84,-81,-96,74.0,-79.5,576,"sky")
+add(-84,95.5,-96,74.0,97,576,"sky")
+add(-84,-81,576,74.0,97,608,"sky")
 # Distant facades hide the hard edge of the playable ground from upper floors.
-for x0,x1 in ((-82.2,-80.9),(51.1,52.0)):
+for x0,x1 in ((-82.2,-80.9),(71.1,72.0)):
     add(x0,-79.2,0,x1,94.8,278,"SCHOOL_CREAM",top="Core_Urban_040")
     deco(x0,-79.2,0,x1,-79.1,22,"SCHOOL_RED")
     for yy in (-70,-50,-30,-13,9,32,55,77):
         for zz in (46,122,198):
             face=x1+.02 if x0<0 else x0-.09
             deco(face,yy-.95,zz,face+.07,yy+.95,zz+35,"WINDOW_GLASS")
-add(-82.2,93.1,0,52.0,94.8,254,"SCHOOL_CREAM",top="Core_Urban_040")
-for xx in range(-75,51,9):
+add(-82.2,93.1,0,72.0,94.8,254,"SCHOOL_CREAM",top="Core_Urban_040")
+for xx in range(-75,71,9):
     for zz in (45,120,195):
         deco(xx-.95,93.00,zz,xx+.95,93.08,zz+34,"WINDOW_GLASS")
 
@@ -530,9 +598,9 @@ add(-34,20,0,-29,55,2,"CSTRIKE_FT4APHT")
 
 # Four solid walls around the school, except the south fence and its gate.
 add(-80.4,-23.0,0,-79.7,92.0,176,"SCHOOL_CREAM",top="Core_Urban_040")
-add(50.0,-23.0,0,50.7,92.0,176,"SCHOOL_CREAM",top="Core_Urban_040")
-add(-80.4,91.3,0,50.7,92.0,176,"SCHOOL_CREAM",top="Core_Urban_040")
-for a,b in ((-80.4,-32.81),(-22.95,50.7)):
+add(70.0,-23.0,0,70.7,92.0,176,"SCHOOL_CREAM",top="Core_Urban_040")
+add(-80.4,91.3,0,70.7,92.0,176,"SCHOOL_CREAM",top="Core_Urban_040")
+for a,b in ((-80.4,-32.81),(-22.95,70.7)):
     # CLIP ensures the open-looking metal rail cannot be jumped through.
     add(a,-23.2,0,b,-22.75,112,"CLIP")
     add(a,-23.2,8,b,-22.75,12,"CSTRIKE_ME4METL")
@@ -550,7 +618,6 @@ for xx in (-32.84,-23.29):
 add(-32.81,-23.3,124,-22.95,-22.5,140,"SCHOOL_GREEN")
 add(-32.0,-23.3,140,-23.75,-22.5,151,"SCHOOL_GREEN")
 add(-30.5,-23.3,151,-25.25,-22.5,160,"SCHOOL_GREEN")
-deco(-31.9,-23.41,127,-23.9,-23.31,136,"MAKTAB_SIGN")
 
 # Road beyond the school gate. It runs to the distant sky, with no dead-end wall.
 add(-82,-79.0,0,52,-23.5,3,"CSTRIKE_FT4APHT")
@@ -662,21 +729,26 @@ for row in range(4):
         ent("info_player_start",(cx0+1.1+col*1.0,cy0+1.1+row*1.3,UP+40),angle="180")
 for y in (49,51,57,60):
     for x in (-48,-46,-44,-42,-40):
-        ent("info_player_deathmatch",(x,y,160),angle="270")
+        ent("info_player_deathmatch",(x,y,SMALL_UP+40),angle="270")
 ent("func_buyzone",brushes=[brush(cx0+.2,cy0+.2,UP,cx1-.2,cy1-.2,UP+96,"AAATRIGGER")],team="2")
-ent("func_buyzone",brushes=[brush(-50.0,46.5,120,-39.5,62.5,216,"AAATRIGGER")],team="1")
+ent("func_buyzone",brushes=[brush(-50.0,46.5,SMALL_UP,-39.5,62.5,SMALL_UP+96,"AAATRIGGER")],team="1")
 # A is inside the large gym; B covers the two eastern toilets.
 # Keep this order so the first bomb target is A in implementations that
 # assign site letters by entity order.
 ent("func_bomb_target",brushes=[brush(site_a[0]-3,site_a[1]-2,8,site_a[0]+3,site_a[1]+2,100,"AAATRIGGER")])
-ent("func_bomb_target",brushes=[brush(9.0,36.0,0,18.2,47.5,96,"AAATRIGGER")])
+ent("func_bomb_target",brushes=[brush(59.0,34.0,0,69.2,48.0,96,"AAATRIGGER")])
 floor_spray(*site_a,8,"{SPRAY_A")
-floor_spray(11.5,40.0,3,"{SPRAY_B")
+floor_spray(60.0,40.0,3,"{SPRAY_B")
 
 wad=";".join(map(str,[TOOL_WAD,GAME/"cstrike"/"cstrike.wad",GAME/"cstrike"/"cs_office.wad",GAME/"cstrike"/"cs_dust.wad",GAME/"valve"/"halflife.wad",ROOT/"3_maktab.wad"]))
 for (props,_bucket),brushes in decor_groups.items():
     ent("func_illusionary",brushes=brushes,**dict(props))
+ent("func_detail",brushes=static_details,zhlt_detaillevel="1")
+exec(compile((ROOT/"cluster_props.py").read_text(encoding="utf8"),str(ROOT/"cluster_props.py"),"exec"))
 lines=["{",'"classname" "worldspawn"',f'"wad" "{wad}"','"skyname" "Des"','"message" "3-MAKTAB | School, Uzbekistan"',*world,"}",*entities]
 OUT.write_text("\n".join(lines)+"\n",encoding="utf-8")
+(ROOT/"annex_layouts.json").write_text(__import__("json").dumps(annex_layouts,indent=2),encoding="utf8")
+(ROOT/"window_units.json").write_text(__import__("json").dumps(window_units,indent=2),encoding="utf8")
+(ROOT/"door_units.json").write_text(__import__("json").dumps(door_units,indent=2),encoding="utf8")
 print(f"WROTE {OUT}, {len(world)} world brushes, {len(entities)} entities, {tree_count} trees")
 

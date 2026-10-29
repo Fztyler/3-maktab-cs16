@@ -107,7 +107,7 @@ def blackboard():
     d = ImageDraw.Draw(im)
     d.rectangle((2,2,253,125),outline=(122,82,49),width=6)
     font = ImageFont.truetype(r"C:\Windows\Fonts\arial.ttf", 21)
-    d.text((22,24), "O'ZBEKISTON  |  3-MAKTAB", font=font, fill=(207,220,201))
+    d.text((22,24), "DARS MAVZUSI", font=font, fill=(207,220,201))
     d.line((22,61,234,61), fill=(184,204,179), width=2)
     d.text((25,75), "a² + b² = c²", font=font, fill=(206,217,198))
     return im
@@ -173,7 +173,25 @@ def scoreboard():
     return im
 
 
+def entry_door():
+    im=Image.new('RGB',(128,256),(231,236,229));d=ImageDraw.Draw(im)
+    d.rectangle((7,7,120,245),fill=(42,91,125),outline=(174,188,189),width=3)
+    d.rectangle((14,16,113,174),fill=(84,130,155))
+    d.line((17,22,109,75),fill=(126,160,173),width=3)
+    d.line((9,65,119,65),fill=(227,234,230),width=6)
+    d.line((9,180,119,180),fill=(227,234,230),width=7)
+    d.rectangle((97,158,104,192),fill=(198,206,205))
+    return im
+
+def school_roof():
+    im=plaster((100,48,44),42,4);d=ImageDraw.Draw(im)
+    for y in range(0,128,32):d.line((0,y,127,y),fill=(75,37,35),width=2)
+    for x in range(0,128,16):d.line((x,0,x,127),fill=(127,65,59),width=2)
+    return im
+
 textures = [
+    miptex("ENTRY_DOOR",entry_door()),
+    miptex("ROOF_BURGUNDY",school_roof()),
     miptex("MAKTAB_SIGN", sign("3-MAKTAB", "O'ZBEKISTON MAKTABI", (221,227,217), (29,67,100))),
     miptex("SITE_A", sign("A", "KATTA SPORT ZAL", (224,227,216), (127,39,31))),
     miptex("SITE_B", sign("B", "HOJATXONA", (220,226,220), (127,39,31))),
@@ -192,7 +210,7 @@ textures = [
     miptex("CAR_WHITE",plaster((197,201,193),9,4)),
     miptex("ROAD_WHITE",plaster((214,211,181),10,3)),
     miptex("BLACKBOARD", blackboard()),
-    miptex("POSTER_MATH",classroom_poster("MATEMATIKA","3-MAKTAB",(55,104,132))),
+    miptex("POSTER_MATH",classroom_poster("MATEMATIKA","FORMULALAR",(55,104,132))),
     miptex("POSTER_GEO",classroom_poster("GEOGRAFIYA","O'ZBEKISTON",(76,122,83))),
     miptex("CLASS_WALL",plaster((219,207,178),20,3)),
     miptex("HALL_FLOOR",hall_floor()),

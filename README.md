@@ -1,39 +1,23 @@
-# de_3_maktab — школа для Counter-Strike 1.6
+# 3 Maktab — Final (CS 1.6, Windows)
 
-Карта режима `de_` по эскизам школы в Blender. Большой корпус полностью пересоздан по `eskiz_1FLOOR.blend`: западный вход, внутренний двор, помещения вдоль коридоров, две разворотные лестницы, кухня, столовая и высокий спортзал. Второй этаж использует ту же основу с компьютерным кабинетом, библиотекой и актовым залом над столовой. CT появляются на втором этаже юго-восточной части большого корпуса, T — на втором этаже северо-западной части малого корпуса. Плент A находится в новом спортзале, B — возле туалетов.
+## Download and play
 
-## Скачать и установить
+**[Download 3_MAKTAB_FINAL.zip](https://github.com/Fztyler/3-maktab-cs16/raw/refs/heads/main/3_MAKTAB_FINAL.zip)**
 
-1. Скачайте [de_3_maktab_install.zip](de_3_maktab_install.zip).
-2. Распакуйте архив в папку установленной Counter-Strike 1.6, сохранив всю структуру `cstrike/`: карту, WAD, модели в `models/maktab/` и музыку в `sound/maktab/`.
-3. Запустите карту `de_3_maktab` через меню создания игры или командой `map de_3_maktab`. Если карта уже была открыта, выйдите с неё и загрузите заново.
+1. Extract the whole ZIP and close Counter-Strike.
+2. Double-click **INSTALL.cmd** and select your CS 1.6 folder containing **hl.exe**.
+3. Run **PLAY_3_MAKTAB.cmd** from your game folder. Select T or CT; bots fill 5 vs 5.
 
-Архив содержит готовые маршруты ботов `cstrike/maps/de_3_maktab.nav`, построенные для этой версии BSP. Если самостоятельно измените геометрию, выполните `bot_nav_analyze` в загруженной карте и дождитесь пересоздания маршрутов.
+Everything required is included: BSP, textures, custom models, music, bot navigation, and Windows server support. No Blender, Python, compiler or manual console setup needed. Replaced files are backed up automatically. Use a separate CS copy if you already run a modified server.
 
-Все 64 двери теперь деревянные распашные: E открывает и закрывает дверь. На карте 135 деревьев с коллизией стволов. Две лестницы большого корпуса вынесены восточнее основных коридоров, с боковыми площадками на обоих этажах.
+## Установка
 
-### Настроенные прострелы для локального Windows-сервера
+Скачай архив по ссылке выше → распакуй целиком → закрой CS → запусти **INSTALL.cmd** → выбери папку с **hl.exe**. Запуск: **PLAY_3_MAKTAB.cmd** в папке игры. Выбери команду; боты дополнят состав до 5 на 5.
 
-В установленной у автора игре включён отдельный плагин для `de_3_maktab`: AWP пробивает до двух стен, остальные пули и дробь — одну. Обычная установка только BSP/WAD использует стандартные правила оружия сервера. Для тех же правил доступен отдельный архив `de_3_maktab_wall_rules_windows.zip` с настроенными Metamod-R, AMX Mod X, ReAPI и ReGameDLL. Он предназначен для локальной Windows-установки: сначала сохраните существующие `addons/`, `liblist.gam` и `sound/materials.txt`, затем распакуйте архив в каталог игры. На серверах с собственными плагинами администратору следует подключить `maktab_penetration.amxx` отдельно.
+## Map and sources
 
-Исходник настройки — `maktab_penetration.sma`; стандартные урон, разброс и темп стрельбы сохраняются, выход пули из стены настроен для тонких стен карты. Толщина по направлению выстрела и потеря урона продолжают учитываться движком.
+Two school buildings, gym site A, eastern toilets site B, independently breakable glass and wooden frames, usable doors, 135 trees with trunk collision, ambient radio. Latest approved version includes higher ceilings and fitted door frames. Team switch: M, once per round.
 
-Сторонние серверные компоненты: [Metamod-R](https://github.com/rehlds/Metamod-R), [AMX Mod X](https://github.com/alliedmodders/amxmodx), [ReAPI](https://github.com/rehlds/ReAPI), [ReGameDLL](https://github.com/rehlds/ReGameDLL_CS). Исходники и лицензии этих проектов доступны по ссылкам; исходник собственного плагина включён в архив.
+Editable source: **de_3_maktab_editor.map** (Valve220), configuration and instructions in **manual_edit/**. Generators and original Blender sketches are included. After manual compilation run **share_window_models.py**; the supplied compile script does this automatically.
 
-## Файлы проекта
-
-- `de_3_maktab.bsp` — готовая карта.
-- `3_maktab.wad` — все созданные для карты текстуры: фасады, полы, двери, метки A/B, сетка и другие детали.
-- `models/maktab/` — оригинальные скамейки, урны, растения, книги, компьютеры, часы, радио, посуда, стойка с мячами и подготовленный стул для актового зала.
-- `sound/maktab/courtyard_radio.wav` — оригинальная 32-секундная музыкальная петля, синтезированная для карты. Радио в кухне и библиотеке слышны только поблизости.
-- `de_3_maktab.res` — список дополнительных ресурсов для передачи игрокам при подключении к серверу.
-- `make_props.py`, `model_sources/` — генератор и исходники моделей; генератор также создаёт музыку. Для компиляции моделей нужен StudioMDL из Sven Co-op SDK, ожидаемый в `tools/studiomdl/studiomdl.exe`.
-- `3m.blend` — исходный эскиз школы; он не изменён сборочным скриптом.
-- `eskiz_1FLOOR.blend` — уточнённый первый этаж большого корпуса; исходный файл сохранён без изменений.
-- `rebuild_big.py`, `new_floor_meshes.json`, `new_big_layout.json` — построение корпуса по контурам эскиза и отчёт о помещениях. При изменении эскиза сначала запустите Blender с `eskiz_1FLOOR.blend` и скриптом `export_new_floor.py`, затем собирайте общую карту из `3m.blend` скриптом `build_map.py`.
-- `de_3_maktab.map`, `build_map.py`, `make_wad.py`, `verify_map.py` — исходник карты, генерация текстур и проверка сборки.
-- `config/` — необязательные настройки раунда и AMX Mod X для этой карты; в установочный ZIP они не входят.
-
-Для повторной сборки понадобятся Blender, Python с Pillow, sdHLT и стандартные ресурсы Counter-Strike 1.6. Перед запуском скриптов измените локальные пути `ROOT`, `GAME` и `TOOL_WAD` в `build_map.py` под свою систему. Стандартные игровые модели и текстуры не включены в репозиторий.
-
-Сборка проверена компиляторами и загрузкой в локальной CS 1.6. Если заметите застревание или визуальный дефект, приложите скриншот и место на карте.
+The user checked the final appearance. Compilation, collision checks and fresh navigation passed; the last automated visual inspection was interrupted. Engine/build compatibility may vary. [Server component sources and licenses](SERVER_COMPONENTS.md).

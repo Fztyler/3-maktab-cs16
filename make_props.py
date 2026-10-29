@@ -92,7 +92,7 @@ class Mesh:
         lines.append('end\n'); (SRC/f'{name}.smd').write_text(''.join(lines),encoding='ascii')
         (SRC/'idle.smd').write_text(head.replace('end\n', 'end\n',1),encoding='ascii')
         model=(OUT/'models'/'maktab'/f'{name}.mdl').as_posix()
-        qc=f'$modelname "{model}"\n$cd "{SRC.as_posix()}"\n$cdtexture "{SRC.as_posix()}"\n$scale 1\n$body studio "{name}"\n$sequence idle "idle" fps 1\n'
+        qc=f'$modelname "{model}"\n$cd "{SRC.as_posix()}"\n$cdtexture "{SRC.as_posix()}"\n$scale 1\n$body studio "{name}"\n$sequence idle "idle" fps 1 rotate -90\n'
         (SRC/f'{name}.qc').write_text(qc,encoding='ascii')
         return len(self.tris)
 
