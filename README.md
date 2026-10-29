@@ -21,3 +21,7 @@ Two school buildings, gym site A, eastern toilets site B, independently breakabl
 Editable source: **de_3_maktab_editor.map** (Valve220), configuration and instructions in **manual_edit/**. Generators and original Blender sketches are included. After manual compilation run **share_window_models.py**; the supplied compile script does this automatically.
 
 The user checked the final appearance. Compilation, collision checks and fresh navigation passed; the last automated visual inspection was interrupted. Engine/build compatibility may vary. [Server component sources and licenses](SERVER_COMPONENTS.md).
+
+## Day3 Map Mini
+
+Separate map with both teams inside the main building: T downstairs northwest, CT upstairs southeast. [Download and installation](mini/README.md). Original map remains available above.
