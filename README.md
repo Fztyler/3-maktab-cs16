@@ -25,3 +25,5 @@ The user checked the final appearance. Compilation, collision checks and fresh n
 ## Day3 Map Mini
 
 Separate map with both teams inside the main building: T downstairs northwest, CT upstairs southeast. [Download and installation](mini/README.md). Original map remains available above.
+
+View-distance update: the main **de_3_maktab** now sets **MaxRange=8192** when loading. Restart the map after installing. Enter `sv_zmax` without a value to check it; manually setting `sv_zmax 8192` is blocked in listen-server multiplayer and is unnecessary.

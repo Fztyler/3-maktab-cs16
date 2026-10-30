@@ -1,5 +1,6 @@
 {
 "classname" "worldspawn"
+"MaxRange" "8192"
 "wad" "N:\3_maktab_map\cs16_build\tools\sdhlt\sdhlt-v1.3.1\tools\sdhlt.wad;N:\Counter-Strike 1.6\cstrike\cstrike.wad;N:\Counter-Strike 1.6\cstrike\cs_office.wad;N:\Counter-Strike 1.6\cstrike\cs_dust.wad;N:\Counter-Strike 1.6\valve\halflife.wad;N:\3_maktab_map\cs16_build\3_maktab.wad"
 "skyname" "Des"
 "message" "3-MAKTAB | School, Uzbekistan"

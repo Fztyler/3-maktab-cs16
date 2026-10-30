@@ -745,7 +745,7 @@ for (props,_bucket),brushes in decor_groups.items():
     ent("func_illusionary",brushes=brushes,**dict(props))
 ent("func_detail",brushes=static_details,zhlt_detaillevel="1")
 exec(compile((ROOT/"cluster_props.py").read_text(encoding="utf8"),str(ROOT/"cluster_props.py"),"exec"))
-lines=["{",'"classname" "worldspawn"',f'"wad" "{wad}"','"skyname" "Des"','"message" "3-MAKTAB | School, Uzbekistan"',*world,"}",*entities]
+lines=["{",'"classname" "worldspawn"',f'"wad" "{wad}"','"skyname" "Des"','"MaxRange" "8192"','"message" "3-MAKTAB | School, Uzbekistan"',*world,"}",*entities]
 OUT.write_text("\n".join(lines)+"\n",encoding="utf-8")
 (ROOT/"annex_layouts.json").write_text(__import__("json").dumps(annex_layouts,indent=2),encoding="utf8")
 (ROOT/"window_units.json").write_text(__import__("json").dumps(window_units,indent=2),encoding="utf8")
