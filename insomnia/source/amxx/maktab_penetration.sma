@@ -41,7 +41,7 @@ public OnRoundStart() { set_task(0.1,"ConfigureModelBounds"); }
 
 public ConfigureModelBounds()
 {
-    new entity, model[96], configured;
+    new entity, model[96], name[64], configured, bodies;
     while ((entity=engfunc(EngFunc_FindEntityByString,entity,"classname","env_sprite"))>0)
     {
         pev(entity,pev_model,model,charsmax(model));
@@ -52,6 +52,14 @@ public ConfigureModelBounds()
         for(new j=0;j<3;j++){fread(file,raw,BLOCK_INT);mins[j]=Float:raw;}
         for(new j=0;j<3;j++){fread(file,raw,BLOCK_INT);maxs[j]=Float:raw;}
         fclose(file);
+        pev(entity,pev_targetname,name,charsmax(name));
+        if(contain(name,"insomnia_scenery_")==0){
+            new separator=containi(name[17],"_");
+            if(separator>=0){
+                new body=str_to_num(name[18+separator]);
+                if(body>0){set_pev(entity,pev_body,body);bodies++;}
+            }
+        }
         set_pev(entity,pev_solid,SOLID_NOT);
         engfunc(EngFunc_SetSize,entity,mins,maxs);
         new Float:origin[3];
@@ -59,7 +67,7 @@ public ConfigureModelBounds()
         engfunc(EngFunc_SetOrigin,entity,origin);
         configured++;
     }
-    server_print("[maktab] configured visibility bounds for %d static groups",configured);
+    server_print("[maktab] configured visibility bounds for %d static groups; scenery bodies=%d",configured,bodies);
 }
 
 public RulesStatus()

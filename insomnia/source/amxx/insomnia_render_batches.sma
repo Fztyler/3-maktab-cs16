@@ -95,7 +95,7 @@ public filter_packet(es,e,ent,host,flags,player,pSet){
    new Float:d=g_eye[host][a]<lo[a]?lo[a]-g_eye[host][a]:(g_eye[host][a]>hi[a]?g_eye[host][a]-hi[a]:0.0);
    d2+=d*d;
   }
-  if(d2<=16384.0)return FMRES_IGNORED;
+  if(d2<=9216.0)return FMRES_IGNORED;
  }else{
   new i=g_groupIndex[ent]-1,Float:lo[3],Float:hi[3],Float:center[3],Float:half[3];
   pev(ent,pev_absmin,lo);pev(ent,pev_absmax,hi);

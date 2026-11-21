@@ -62,10 +62,6 @@ new g_mg3Walls[MAX_PLAYERS + 1];
 new Float:g_mg3Source[MAX_PLAYERS + 1][3];
 const BROWNING_MARK = 0x4D3242;
 
-new g_trenchShooter;
-new Float:g_trenchSource[3];
-new Float:g_trenchDirection[3];
-new Float:g_trenchDistance;
 
 public plugin_init()
 {
@@ -87,8 +83,6 @@ public plugin_init()
         RegisterHookChain(RG_CBaseEntity_FireBullets3, "finish_mg3_shot", true);
     }
     RegisterHookChain(RG_CBaseEntity_FireBuckshots, "modify_buckshot");
-    RegisterHookChain(RG_CBaseEntity_FireBuckshots, "finish_buckshot", true);
-    register_forward(FM_TraceLine, "tighten_trench_trace");
     register_timing_hooks("weapon_deagle");
     register_timing_hooks("weapon_ump45");
     register_timing_hooks("weapon_m249");
@@ -351,38 +345,11 @@ public modify_buckshot(id, pellets, Float:source[3], Float:direction[3], Float:s
     new weapon = get_member(id, m_pActiveItem);
     if (weapon > 0 && WeaponIdType:get_member(weapon, m_iId) == WEAPON_M3)
     {
-        g_trenchShooter = id;
-        xs_vec_copy(source, g_trenchSource);
-        xs_vec_copy(direction, g_trenchDirection);
-        g_trenchDistance = distance * 1.80;
-        SetHookChainArg(6, ATYPE_FLOAT, g_trenchDistance);
+        // Keep the native pellet trace and apply the existing range and damage settings.
+        SetHookChainArg(6, ATYPE_FLOAT, distance * 1.80);
         SetHookChainArg(8, ATYPE_INTEGER, floatround(float(damage) * TRENCH_GUN_DAMAGE_SCALE));
     }
     return HC_CONTINUE;
-}
-
-public finish_buckshot(id)
-{
-    if (id == g_trenchShooter) g_trenchShooter = 0;
-}
-
-public tighten_trench_trace(const Float:start[3], const Float:end[3], flags, shooter, trace)
-{
-    if (!g_trenchShooter || shooter != g_trenchShooter || get_distance_f(start, g_trenchSource) > 0.01)
-        return FMRES_IGNORED;
-
-    new Float:pellet[3];
-    xs_vec_sub(end, start, pellet);
-    if (floatabs(xs_vec_dot(pellet, g_trenchDirection) - g_trenchDistance) > 1.0)
-        return FMRES_IGNORED;
-
-    // Narrow only the pellet's lateral offset. Keep the shot direction, distance and native damage flow.
-    new Float:adjusted[3];
-    for (new axis = 0; axis < 3; axis++)
-        adjusted[axis] = start[axis] + pellet[axis] * 0.4 + g_trenchDirection[axis] * g_trenchDistance * 0.6;
-
-    engfunc(EngFunc_TraceLine, start, adjusted, flags, shooter, trace);
-    return FMRES_SUPERCEDE;
 }
 
 public before_primary(weapon)

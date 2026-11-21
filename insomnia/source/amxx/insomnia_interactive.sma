@@ -49,7 +49,7 @@ public plugin_precache()
 
     for (new type = 0; type < sizeof FURNITURE_MODELS; type++)
         precache_model(FURNITURE_MODELS[type]);
-    precache_model("models/maktab/insomnia_r12_glass.mdl");
+    precache_model("models/maktab/insomnia_entry_glass.mdl");
     g_glassGibs=precache_model("models/glassgibs.mdl");
     precache_sound("debris/glass1.wav");
     for (new i = 0; i < sizeof GIB_MODELS; i++) {
@@ -175,7 +175,7 @@ public door_use(ent)
 
 link_glass(ent,type)
 {
-    engfunc(EngFunc_SetModel,ent,"models/maktab/insomnia_r12_glass.mdl");
+    engfunc(EngFunc_SetModel,ent,"models/maktab/insomnia_entry_glass.mdl");
     new Float:mins[3],Float:origin[3];
     for (new axis=0;axis<3;axis++) mins[axis]=-GLASS_HALVES[type][axis];
     set_pev(ent,pev_body,type);
@@ -332,9 +332,8 @@ public partition_damage(ent, inflictor, attacker, Float:damage, bits)
     }
 
     new weapon = get_member(attacker, m_pActiveItem);
-    if ((bits & DMG_BULLET) && weapon > 0 && WeaponIdType:get_member(weapon, m_iId) == WEAPON_M249
-        && pev(weapon, pev_iuser4) != 0x4D3242) {
-        SetHamParamFloat(4, g_heavyFence[ent] ? 20.401 : 34.0);
+    if ((bits & DMG_BULLET) && weapon > 0 && WeaponIdType:get_member(weapon, m_iId) == WEAPON_M249) {
+        SetHamParamFloat(4, g_heavyFence[ent] ? 20.401 : 68.0);
         return HAM_HANDLED;
     }
     return HAM_SUPERCEDE;
@@ -407,7 +406,7 @@ public furniture_visibility(es, e, ent, host, hostflags, player, pSet)
             new Float:gap=floatmax(floatabs(offset[axis])-g_wallHalf[ent][axis],0.0);
             nearest2+=gap*gap;
         }
-        new Float:near=128.0;
+        new Float:near=96.0;
         if(nearest2<=near*near)return FMRES_IGNORED;
         if (InsomniaVisibilityInBox(host,g_wallCenter[ent],g_wallHalf[ent]) && wall_visible(ent,host,now))
             return FMRES_IGNORED;
@@ -423,7 +422,7 @@ public furniture_visibility(es, e, ent, host, hostflags, player, pSet)
         new Float:delta[3],Float:dot;
         for(new axis=0;axis<3;axis++){delta[axis]=origin[axis]-g_eye[host][axis];dot+=delta[axis]*g_look[host][axis];}
         new Float:distance=vector_length(delta);
-        if(distance<=96.0+g_propRadius[ent])return FMRES_IGNORED;
+        if(distance<=72.0+g_propRadius[ent])return FMRES_IGNORED;
         if((g_doorMaterial[ent]||distance<=2400.0) && InsomniaVisibilityInBox(host,origin,half) && prop_visible(ent,host,now))return FMRES_IGNORED;
     }
 

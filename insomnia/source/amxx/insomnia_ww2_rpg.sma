@@ -4,7 +4,9 @@
 #include <reapi>
 
 #define RPG_PRICE 7000
-#define RPG_AMMO 2
+#define RPG_AMMO 4
+#define RPG_SPEED 1980.0
+#define RPG_BLAST_RADIUS 360.0
 #define RPG_MARKER 0x525047
 #define CARRIER "weapon_smokegrenade"
 #define ROCKET "insomnia_rpg_rocket"
@@ -283,7 +285,7 @@ launch_rocket(id)
     angle_vector(angles, ANGLEVECTOR_FORWARD, velocity);
     for (new axis = 0; axis < 3; axis++) {
         eye[axis] += view[axis];
-        velocity[axis] *= 1150.0;
+        velocity[axis] *= RPG_SPEED;
     }
     angles[0] = -angles[0];
 
@@ -325,7 +327,7 @@ public rocket_touch(rocket, other)
     new Float:origin[3], Float:velocity[3];
     pev(rocket, pev_origin, origin);
     pev(rocket, pev_velocity, velocity);
-    for (new axis = 0; axis < 3; axis++) origin[axis] -= velocity[axis] * 0.007;
+    for (new axis = 0; axis < 3; axis++) origin[axis] -= velocity[axis] * (8.0 / RPG_SPEED);
 
     new owner = pev(rocket, pev_owner);
     if (owner < 1 || owner > MaxClients || !is_user_connected(owner)
@@ -345,7 +347,7 @@ public rocket_touch(rocket, other)
     set_pev(rocket, pev_iuser3, other);
     if (other > 0 && pev_valid(other) && owner > 0)
         ExecuteHamB(Ham_TakeDamage, other, rocket, owner, 1200.0, DMG_BLAST);
-    rg_dmg_radius(origin, rocket, owner, 160.0, 225.0, CLASS_NONE, DMG_BLAST);
+    rg_dmg_radius(origin, rocket, owner, 160.0, RPG_BLAST_RADIUS, CLASS_NONE, DMG_BLAST);
     set_pev(rocket, pev_iuser2, 0);
     set_pev(rocket, pev_flags, pev(rocket, pev_flags) | FL_KILLME);
     return FMRES_SUPERCEDE;
