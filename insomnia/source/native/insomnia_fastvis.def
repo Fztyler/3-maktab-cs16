@@ -1,0 +1,8 @@
+EXPORTS
+ GiveFnptrsToDll=GiveFnptrsToDll@8
+ Meta_Query
+ Meta_Attach
+ Meta_Detach
+ AMXX_Query
+ AMXX_Attach
+ AMXX_Detach

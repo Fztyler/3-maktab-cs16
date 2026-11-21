@@ -1,3 +1,9 @@
+# de_insomnia_project_t — Insomnia WW2
+
+**[Скачать сборку Insomnia](insomnia/de_insomnia_project_t_install.zip)** · **[Инструкция по установке](insomnia/README.md)** · **[Исходники](insomnia/source/)**
+
+Локальная карта с ботами, обновлённым периметром и разрушаемыми стенами. В режиме WW2 доступны RPG‑7 за $7000 и Browning M2 .50 в категории пулемётов.
+
 # 3 Maktab — Final (CS 1.6, Windows)
 
 ## Download and play
