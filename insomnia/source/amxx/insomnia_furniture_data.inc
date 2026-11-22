@@ -22,6 +22,7 @@ new const FURNITURE_MODELS[][] =
     "models/maktab/insomnia_furniture.mdl",
     "models/maktab/insomnia_furniture.mdl",
     "models/maktab/insomnia_furniture.mdl",
+    "models/maktab/insomnia_furniture.mdl",
 };
 
 new const FURNITURE_HULLS[][6] =
@@ -48,4 +49,5 @@ new const FURNITURE_HULLS[][6] =
     {13, 6, 21, 18, 1, 0},
     {10, 6, 12, 12, 0, 0},
     {20, 22, 12, 16, 1, 0},
+    {40, 11, 22, 68, 0, 0},
 };

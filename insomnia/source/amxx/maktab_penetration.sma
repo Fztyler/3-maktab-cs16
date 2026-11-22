@@ -41,7 +41,7 @@ public OnRoundStart() { set_task(0.1,"ConfigureModelBounds"); }
 
 public ConfigureModelBounds()
 {
-    new entity, model[96], name[64], configured, bodies;
+    new entity, model[96], name[64], packedBounds[96], limits[6][12], configured, bodies;
     while ((entity=engfunc(EngFunc_FindEntityByString,entity,"classname","env_sprite"))>0)
     {
         pev(entity,pev_model,model,charsmax(model));
@@ -54,6 +54,14 @@ public ConfigureModelBounds()
         fclose(file);
         pev(entity,pev_targetname,name,charsmax(name));
         if(contain(name,"insomnia_scenery_")==0){
+            pev(entity,pev_netname,packedBounds,charsmax(packedBounds));
+            if(parse(packedBounds,limits[0],11,limits[1],11,limits[2],11,
+                                  limits[3],11,limits[4],11,limits[5],11)==6){
+                for(new axis=0;axis<3;axis++){
+                    mins[axis]=str_to_float(limits[axis]);
+                    maxs[axis]=str_to_float(limits[axis+3]);
+                }
+            }
             new separator=containi(name[17],"_");
             if(separator>=0){
                 new body=str_to_num(name[18+separator]);

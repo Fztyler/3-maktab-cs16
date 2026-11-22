@@ -10,7 +10,7 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parent
 BUILD = ROOT.parent
-MODEL_COUNT = 10
+MODEL_COUNT = 6
 GROUP_SIZE = 31
 MODELS = ROOT / 'custom_assets/cstrike/models/maktab'
 SOURCE = ROOT / 'room_batch_source'
@@ -238,12 +238,16 @@ def main():
               {t[0]:t for t in glass_textures}]
     groups = list(batches(decorations, room_zones()))
     assert sum(len(g['props']) for g in groups) == len(decorations)
-    assert 0 < len(groups) <= MODEL_COUNT*7
-    # Group IDs stay by room; model slots combine separate skin families.
-    for index in range(MODEL_COUNT):
-        families = groups[index::MODEL_COUNT]
+    # Exterior panes can be visible while the rooms are behind solid walls.
+    # Pack them together so their models no longer carry hidden room meshes.
+    rooms=[group for group in groups if group['kind']==0]
+    panes=[group for group in groups if group['kind']!=0]
+    for index in range(MODEL_COUNT-1):
+        families=rooms[index::MODEL_COUNT-1]
         if families:
-            emit_model(index, families, furniture[0], frames, glass[0], lookup)
+            emit_model(index,families,furniture[0],frames,glass[0],lookup)
+    if panes:
+        emit_model(MODEL_COUNT-1,panes,furniture[0],frames,glass[0],lookup)
     write_include(groups)
     (ROOT / 'batches_manifest.json').write_text(json.dumps(groups, indent=2), encoding='utf-8')
     print(f'{len(groups)} local-light groups in {min(MODEL_COUNT, len(groups))} models, {len(decorations)} independent objects')

@@ -21,6 +21,8 @@ new bool:g_partition[MAP_EDICTS];
 new bool:g_heavyFence[MAP_EDICTS];
 new bool:g_sill[MAP_EDICTS];
 new g_doorMaterial[MAP_EDICTS];
+new bool:g_quietDoorSound;
+new Float:g_doorTraceYaw[33][MAP_EDICTS];
 new g_activeHE;
 new Float:g_debrisWindow;
 new g_debrisCount;
@@ -73,6 +75,7 @@ public plugin_init()
     RegisterHookChain(RG_CGrenade_ExplodeHeGrenade, "finish_he", true);
     RegisterHookChain(RG_CSGameRules_RestartRound, "restore_furniture", true);
     register_forward(FM_AddToFullPack, "furniture_visibility");
+    register_forward(FM_EmitSound, "door_sound");
     RegisterHam(Ham_Spawn,"player","visibility_spawned",true);
     InsomniaVisibilityInit();
     g_batchesCvar=get_cvar_pointer("insomnia_batches_active");
@@ -165,6 +168,17 @@ restore_door(ent)
     set_pev(ent, pev_solid, SOLID_BSP);
     set_pev(ent, pev_effects, pev(ent, pev_effects) & ~EF_NODRAW);
     engfunc(EngFunc_SetOrigin, ent, origin);
+}
+
+public door_sound(ent,channel,const sample[],Float:volume,Float:attenuation,flags,pitch)
+{
+    if (g_quietDoorSound || ent<=0 || ent>=MAP_EDICTS || !g_doorMaterial[ent]
+        || volume<=0.0 || !equal(sample,"doors/",6)) return FMRES_IGNORED;
+
+    g_quietDoorSound=true;
+    engfunc(EngFunc_EmitSound,ent,channel,sample,volume*0.5,attenuation,flags,pitch);
+    g_quietDoorSound=false;
+    return FMRES_SUPERCEDE;
 }
 
 public door_use(ent)
@@ -281,7 +295,7 @@ public furniture_damage(ent, inflictor, attacker, Float:damage, bits)
         material = FURNITURE_HULLS[g_modelType[ent]-1][4];
         origin[2] += 16.0;
     }
-    emit_sound(ent, CHAN_BODY, BREAK_SOUNDS[material], 0.8, ATTN_NORM, 0, PITCH_NORM);
+    emit_sound(ent, CHAN_BODY, BREAK_SOUNDS[material], g_doorMaterial[ent] ? 0.4 : 0.8, ATTN_NORM, 0, PITCH_NORM);
     engfunc(EngFunc_MessageBegin, MSG_PVS, SVC_TEMPENTITY, origin, 0);
     write_byte(TE_BREAKMODEL);
     for (new axis = 0; axis < 3; axis++) engfunc(EngFunc_WriteCoord, origin[axis]);
@@ -414,16 +428,15 @@ public furniture_visibility(es, e, ent, host, hostflags, player, pSet)
         new Float:origin[3],Float:half[3],Float:lo[3],Float:hi[3];
         pev(ent,pev_absmin,lo);pev(ent,pev_absmax,hi);
         for(new axis=0;axis<3;axis++){origin[axis]=(lo[axis]+hi[axis])*0.5;half[axis]=(hi[axis]-lo[axis])*0.5;}
-        if(g_doorMaterial[ent]) {
-            door_render_bounds(ent,lo,hi);
-            for(new axis=0;axis<3;axis++){origin[axis]=(lo[axis]+hi[axis])*0.5;half[axis]=(hi[axis]-lo[axis])*0.5;}
-            g_propRadius[ent]=get_distance_f(lo,hi)*0.5;
+        new Float:distance2;
+        for(new axis=0;axis<3;axis++){
+            new Float:offset=origin[axis]-g_eye[host][axis];
+            distance2+=offset*offset;
         }
-        new Float:delta[3],Float:dot;
-        for(new axis=0;axis<3;axis++){delta[axis]=origin[axis]-g_eye[host][axis];dot+=delta[axis]*g_look[host][axis];}
-        new Float:distance=vector_length(delta);
-        if(distance<=72.0+g_propRadius[ent])return FMRES_IGNORED;
-        if((g_doorMaterial[ent]||distance<=2400.0) && InsomniaVisibilityInBox(host,origin,half) && prop_visible(ent,host,now))return FMRES_IGNORED;
+        new Float:near=72.0+(g_doorMaterial[ent] ? vector_length(half) : g_propRadius[ent]);
+        if(distance2<=near*near)return FMRES_IGNORED;
+        if((g_doorMaterial[ent]||distance2<=5760000.0) && InsomniaVisibilityInBox(host,origin,half)
+           && prop_visible(ent,host,now,lo,hi))return FMRES_IGNORED;
     }
 
     forward_return(FMV_CELL,0);
@@ -458,24 +471,23 @@ public debris_budget(message,destination,id)
     return ++g_debrisCount>6 ? PLUGIN_HANDLED : PLUGIN_CONTINUE;
 }
 
-bool:prop_visible(ent,host,Float:now)
+bool:prop_visible(ent,host,Float:now,Float:lo[3],Float:hi[3])
 {
     new Float:origin[3];pev(ent,pev_origin,origin);
     if(get_distance_f(origin,g_eye[host])<160.0)return true;
-    if(!g_doorMaterial[ent]&&g_wallNextCheck[host][ent]>now)return g_wallSeen[host][ent];
-    g_wallNextCheck[host][ent]=now+0.10;
-    new Float:lo[3],Float:hi[3];pev(ent,pev_absmin,lo);pev(ent,pev_absmax,hi);
     if(g_doorMaterial[ent]){
-        door_render_bounds(ent,lo,hi);
+        new Float:angles[3];pev(ent,pev_angles,angles);
+        // Cached only for the same door transform. Moving doors get fresh bounds.
+        if(g_wallNextCheck[host][ent]>now && g_doorTraceYaw[host][ent]==angles[1])
+            return g_wallSeen[host][ent];
+        g_wallNextCheck[host][ent]=now+0.10;
+        g_doorTraceYaw[host][ent]=angles[1];
         g_wallSeen[host][ent]=bool:insomnia_box_visible(g_eye[host],lo,hi,host,0,ent,17);
         return g_wallSeen[host][ent];
     }
+    if(g_wallNextCheck[host][ent]>now)return g_wallSeen[host][ent];
+    g_wallNextCheck[host][ent]=now+0.10;
     for(new axis=0;axis<3;axis++){lo[axis]+=1.0;hi[axis]-=1.0;}
-    g_wallSeen[host][ent]=bool:insomnia_box_visible(g_eye[host],lo,hi,host,ent,0,g_doorMaterial[ent]?17:0);
+    g_wallSeen[host][ent]=bool:insomnia_box_visible(g_eye[host],lo,hi,host,0,ent,0);
     return g_wallSeen[host][ent];
-}
-
-door_render_bounds(ent,Float:lo[3],Float:hi[3])
-{
-    pev(ent,pev_absmin,lo);pev(ent,pev_absmax,hi);
 }

@@ -5,7 +5,7 @@
 
 #define RPG_PRICE 7000
 #define RPG_AMMO 4
-#define RPG_SPEED 1980.0
+#define RPG_SPEED 3960.0
 #define RPG_BLAST_RADIUS 360.0
 #define RPG_MARKER 0x525047
 #define CARRIER "weapon_smokegrenade"
@@ -49,8 +49,7 @@ public plugin_init()
     RegisterHookChain(RG_CSGameRules_RestartRound, "clear_rockets");
     RegisterHookChain(RG_CBasePlayer_GiveAmmo, "block_rocket_refill");
     RegisterHookChain(RG_CBasePlayer_HasRestrictItem, "hide_smoke_purchase");
-    register_forward(FM_Touch, "rocket_touch");
-    register_forward(FM_Think, "rocket_expire");
+    register_forward(FM_Think, "rocket_flight");
     register_forward(FM_UpdateClientData, "prevent_smoke_prediction", true);
 }
 
@@ -295,10 +294,15 @@ launch_rocket(id)
     set_pev(rocket, pev_iuser1, get_user_userid(id));
     set_pev(rocket, pev_iuser2, RPG_MARKER);
     set_pev(rocket, pev_angles, angles);
-    set_pev(rocket, pev_movetype, MOVETYPE_FLY);
-    set_pev(rocket, pev_solid, SOLID_BBOX);
+    // Sweep the flight segment directly. This avoids the engine's global
+    // velocity clamp without raising it for players, grenades or other entities.
+    set_pev(rocket, pev_movetype, MOVETYPE_NONE);
+    set_pev(rocket, pev_solid, SOLID_NOT);
     set_pev(rocket, pev_velocity, velocity);
-    set_pev(rocket, pev_nextthink, get_gametime() + 4.0);
+    new Float:now=get_gametime();
+    set_pev(rocket,pev_fuser1,now+4.0);
+    set_pev(rocket,pev_fuser2,now);
+    set_pev(rocket,pev_nextthink,now+0.001);
     engfunc(EngFunc_SetSize, rocket, Float:{0.0, 0.0, 0.0}, Float:{0.0, 0.0, 0.0});
     engfunc(EngFunc_SetOrigin, rocket, eye);
 
@@ -321,12 +325,8 @@ bool:is_rocket(ent)
     return ent > MaxClients && pev_valid(ent) && pev(ent, pev_iuser2) == RPG_MARKER;
 }
 
-public rocket_touch(rocket, other)
+rocket_impact(rocket, other, Float:origin[3], const Float:velocity[3])
 {
-    if (!is_rocket(rocket) || other == pev(rocket, pev_owner)) return FMRES_IGNORED;
-    new Float:origin[3], Float:velocity[3];
-    pev(rocket, pev_origin, origin);
-    pev(rocket, pev_velocity, velocity);
     for (new axis = 0; axis < 3; axis++) origin[axis] -= velocity[axis] * (8.0 / RPG_SPEED);
 
     new owner = pev(rocket, pev_owner);
@@ -348,16 +348,48 @@ public rocket_touch(rocket, other)
     if (other > 0 && pev_valid(other) && owner > 0)
         ExecuteHamB(Ham_TakeDamage, other, rocket, owner, 1200.0, DMG_BLAST);
     rg_dmg_radius(origin, rocket, owner, 160.0, RPG_BLAST_RADIUS, CLASS_NONE, DMG_BLAST);
-    set_pev(rocket, pev_iuser2, 0);
-    set_pev(rocket, pev_flags, pev(rocket, pev_flags) | FL_KILLME);
-    return FMRES_SUPERCEDE;
+    kill_rocket(rocket);
 }
 
-public rocket_expire(rocket)
+kill_rocket(rocket)
+{
+    set_pev(rocket,pev_iuser2,0);
+    set_pev(rocket,pev_flags,pev(rocket,pev_flags)|FL_KILLME);
+}
+
+public rocket_flight(rocket)
 {
     if (!is_rocket(rocket)) return FMRES_IGNORED;
-    set_pev(rocket, pev_iuser2, 0);
-    set_pev(rocket, pev_flags, pev(rocket, pev_flags) | FL_KILLME);
+    new Float:now=get_gametime();
+    new Float:expires,Float:last;
+    pev(rocket,pev_fuser1,expires);
+    pev(rocket,pev_fuser2,last);
+    if(now>=expires){
+        kill_rocket(rocket);
+        return FMRES_SUPERCEDE;
+    }
+
+    new Float:from[3],Float:to[3],Float:velocity[3];
+    pev(rocket,pev_origin,from);
+    pev(rocket,pev_velocity,velocity);
+    for(new axis;axis<3;axis++)to[axis]=from[axis]+velocity[axis]*floatmax(now-last,0.0);
+    new owner=pev(rocket,pev_owner);
+    if(owner<1 || owner>MaxClients || !is_user_connected(owner)
+        || get_user_userid(owner)!=pev(rocket,pev_iuser1))owner=rocket;
+    new trace=create_tr2();
+    engfunc(EngFunc_TraceLine,from,to,DONT_IGNORE_MONSTERS,owner,trace);
+    new Float:fraction;get_tr2(trace,TR_flFraction,fraction);
+    new hit=get_tr2(trace,TR_pHit);
+    if(fraction<1.0 || get_tr2(trace,TR_StartSolid)){
+        get_tr2(trace,TR_vecEndPos,to);
+        free_tr2(trace);
+        rocket_impact(rocket,hit,to,velocity);
+        return FMRES_SUPERCEDE;
+    }
+    free_tr2(trace);
+    engfunc(EngFunc_SetOrigin,rocket,to);
+    set_pev(rocket,pev_fuser2,now);
+    set_pev(rocket,pev_nextthink,now+0.001);
     return FMRES_SUPERCEDE;
 }
 

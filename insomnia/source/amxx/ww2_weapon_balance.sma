@@ -5,7 +5,7 @@
 #include <xs>
 
 const Float:REVOLVER_CYCLE = 0.120;
-const Float:MP40_CYCLE = 0.125;
+const Float:MP40_CYCLE = 0.10416667;
 const Float:MG3_CYCLE = 0.050;
 const Float:MG3_BURST_PAUSE = 0.24;
 const MG3_BURST_SHOTS = 4;

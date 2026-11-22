@@ -40,8 +40,13 @@ public plugin_init()
     set_task(0.2, "replace_map_decoration");
 }
 
+new Float:g_npcHome[3] = { -600.0, 780.0, 136.0 };
+
 public replace_map_decoration()
 {
+    new marker = find_ent_by_tname(-1, "insomnia_rano_origin");
+    if (is_valid_ent(marker))
+        entity_get_vector(marker, EV_VEC_origin, g_npcHome);
     remove_old_rano_entities();
     create_rano_npc();
 }
@@ -84,10 +89,9 @@ create_rano_npc()
     entity_set_string(g_npc, EV_SZ_targetname, "rano_ustoz");
     entity_set_model(g_npc, NPC_MODEL);
 
-    new Float:origin[3] = { -600.0, 780.0, 136.0 };
     new Float:mins[3] = { -12.0, -12.0, 0.0 };
     new Float:maxs[3] = { 12.0, 12.0, 56.0 };
-    entity_set_origin(g_npc, origin);
+    entity_set_origin(g_npc, g_npcHome);
     entity_set_size(g_npc, mins, maxs);
 
     entity_set_int(g_npc, EV_INT_movetype, MOVETYPE_STEP);
