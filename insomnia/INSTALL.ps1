@@ -32,6 +32,18 @@ try {
             throw "Installed file did not verify: $relative"
         }
     }
+
+    $legacyDirectory = Join-Path $game 'menu_video'
+    $legacy = Join-Path $legacyDirectory 'CS16 Video Menu.exe'
+    if (Test-Path -LiteralPath $legacy -PathType Leaf) {
+        $directory = Get-Item -LiteralPath $legacyDirectory
+        if (!($directory.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+            $saved = Join-Path $backup 'menu_video\CS16 Video Menu.exe'
+            New-Item -ItemType Directory -Path (Split-Path -Parent $saved) -Force | Out-Null
+            Move-Item -LiteralPath $legacy -Destination $saved
+            $changes.Add(@{ Destination=$legacy; Backup=$saved; HadFile=$true })
+        }
+    }
 } catch {
     for ($i = $changes.Count - 1; $i -ge 0; $i--) {
         $change = $changes[$i]
